@@ -3,6 +3,8 @@ import type { ReactNode } from "react";
 import { colors, fonts, fontSizes, spacing } from "./Tokens.stylex";
 import { pageStyles } from "./PageStyles.stylex";
 
+const MOBILE = "@media (max-width: 480px)";
+
 export interface AboutProps {
   iconSrc: string;
   appName: string;
@@ -56,6 +58,14 @@ const styles = create({
   },
   icon: {
     borderRadius: spacing.s,
+    width: {
+      default: 128,
+      [MOBILE]: 96,
+    },
+    height: {
+      default: 128,
+      [MOBILE]: 96,
+    },
   },
   appName: {
     fontSize: fontSizes.step3,

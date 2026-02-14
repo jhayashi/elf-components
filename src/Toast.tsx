@@ -2,6 +2,8 @@ import { create, props } from "@stylexjs/stylex";
 import { useEffect, useState } from "react";
 import { colors, fonts, fontSizes, spacing } from "./Tokens.stylex";
 
+const MOBILE = "@media (max-width: 480px)";
+
 type ToastVariant = "success" | "error";
 
 interface ToastMessage {
@@ -48,9 +50,22 @@ export function Toast() {
 const styles = create({
   toast: {
     position: "fixed",
-    bottom: spacing.l,
-    left: "50%",
-    transform: "translateX(-50%)",
+    bottom: {
+      default: spacing.l,
+      [MOBILE]: spacing.m,
+    },
+    left: {
+      default: "50%",
+      [MOBILE]: spacing.s,
+    },
+    right: {
+      default: "auto",
+      [MOBILE]: spacing.s,
+    },
+    transform: {
+      default: "translateX(-50%)",
+      [MOBILE]: "none",
+    },
     paddingBlock: spacing.xs,
     paddingInline: spacing.m,
     borderRadius: 8,

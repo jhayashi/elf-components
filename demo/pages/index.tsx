@@ -4,6 +4,8 @@ import { pageStyles, elementStyles } from "../../src/PageStyles.stylex";
 import { Toast, toast } from "../../src/Toast";
 import { AppMenu } from "../components/AppMenu";
 
+const MOBILE = "@media (max-width: 480px)";
+
 export default function Home() {
   return (
     <div {...props(pageStyles.page)}>
@@ -116,7 +118,10 @@ const paletteItems = [
 const styles = create({
   palette: {
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fill, minmax(14rem, 1fr))",
+    gridTemplateColumns: {
+      default: "repeat(auto-fill, minmax(14rem, 1fr))",
+      [MOBILE]: "repeat(auto-fill, minmax(10rem, 1fr))",
+    },
     gap: spacing.xs,
   },
   swatch: {
@@ -173,6 +178,10 @@ const styles = create({
     borderColor: colors.border,
     borderRadius: 6,
     outline: "none",
+    width: {
+      default: "auto",
+      [MOBILE]: "100%",
+    },
     "::placeholder": {
       color: colors.disabled,
     },
@@ -187,14 +196,20 @@ const styles = create({
   },
   surface: {
     flex: 1,
-    minWidth: "12rem",
+    minWidth: {
+      default: "12rem",
+      [MOBILE]: "8rem",
+    },
     padding: spacing.m,
     backgroundColor: colors.hoverAndFocusBackground,
     borderRadius: 8,
   },
   elevated: {
     flex: 1,
-    minWidth: "12rem",
+    minWidth: {
+      default: "12rem",
+      [MOBILE]: "8rem",
+    },
     padding: spacing.m,
     backgroundColor: "var(--elevated-surface-background)",
     borderWidth: 1,

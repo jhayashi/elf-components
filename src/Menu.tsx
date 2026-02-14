@@ -1,6 +1,6 @@
 import { create, props } from "@stylexjs/stylex";
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { colors, fonts, fontSizes, spacing } from "./Tokens.stylex";
+import { colors, consts, fonts, fontSizes, spacing } from "./Tokens.stylex";
 
 export interface MenuItem {
   label: string;
@@ -110,14 +110,14 @@ const styles = create({
     flexDirection: "column",
     justifyContent: "center",
     gap: 4,
-    padding: 6,
+    padding: 10,
     ":hover": {
       opacity: 0.8,
     },
   },
   hamburgerLine: {
     display: "block",
-    width: 18,
+    width: 22,
     height: 2,
     backgroundColor: colors.accent,
     borderRadius: 1,
@@ -146,6 +146,9 @@ const styles = create({
     color: colors.primary,
     textDecoration: "none",
     whiteSpace: "nowrap",
+    minHeight: consts.minimalHit,
+    display: "flex",
+    alignItems: "center",
     ":hover": {
       backgroundColor: colors.ghostElementHover,
     },

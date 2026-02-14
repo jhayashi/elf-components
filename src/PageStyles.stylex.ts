@@ -1,5 +1,7 @@
 import { create } from "@stylexjs/stylex";
-import { colors, fonts, fontSizes, spacing } from "./Tokens.stylex";
+import { colors, consts, fonts, fontSizes, spacing } from "./Tokens.stylex";
+
+const MOBILE = "@media (max-width: 480px)";
 
 export const pageStyles = create({
   page: {
@@ -10,7 +12,10 @@ export const pageStyles = create({
     width: "100%",
     marginInline: "auto",
     paddingBlock: spacing.m,
-    paddingInline: spacing.s,
+    paddingInline: {
+      default: spacing.m,
+      [MOBILE]: spacing.s,
+    },
     gap: spacing.l,
   },
   header: {
@@ -51,6 +56,7 @@ export const elementStyles = create({
     borderColor: colors.border,
     borderRadius: 6,
     cursor: "pointer",
+    minHeight: consts.minimalHit,
     ":hover": {
       borderColor: colors.accent,
     },
@@ -68,6 +74,7 @@ export const elementStyles = create({
     borderColor: colors.border,
     borderRadius: 6,
     cursor: "pointer",
+    minHeight: consts.minimalHit,
     ":hover": {
       borderColor: colors.error,
     },
@@ -85,6 +92,7 @@ export const elementStyles = create({
     borderRadius: 6,
     cursor: "pointer",
     outline: "none",
+    minHeight: consts.minimalHit,
     ":focus": {
       borderColor: colors.accent,
     },
@@ -99,6 +107,7 @@ export const elementStyles = create({
     alignItems: "center",
     gap: spacing.xs,
     cursor: "pointer",
+    minHeight: consts.minimalHit,
   },
   toggleLabel: {
     fontSize: fontSizes.step_1,

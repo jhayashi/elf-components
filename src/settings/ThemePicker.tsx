@@ -1,6 +1,8 @@
 import { create, props } from "@stylexjs/stylex";
 import type { ThemeEntry } from "../theme";
-import { colors, fonts, fontSizes, spacing } from "../Tokens.stylex";
+import { colors, consts, fonts, fontSizes, spacing } from "../Tokens.stylex";
+
+const MOBILE = "@media (max-width: 480px)";
 
 export interface ThemePickerProps {
   themes: ThemeEntry[];
@@ -33,6 +35,10 @@ const styles = create({
     display: "flex",
     flexWrap: "wrap",
     gap: spacing.xs,
+    flexDirection: {
+      default: "row",
+      [MOBILE]: "column",
+    },
   },
   themeButton: {
     paddingBlock: spacing.xs,
@@ -46,6 +52,7 @@ const styles = create({
     borderColor: colors.border,
     borderRadius: 6,
     cursor: "pointer",
+    minHeight: consts.minimalHit,
     ":hover": {
       borderColor: colors.accent,
     },
