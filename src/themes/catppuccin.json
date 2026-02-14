@@ -1,0 +1,65 @@
+{
+  "$schema": "https://zed.dev/schema/themes/v0.2.0.json",
+  "name": "Catppuccin",
+  "author": "Catppuccin",
+  "themes": [
+    {
+      "name": "Catppuccin Latte",
+      "appearance": "light",
+      "style": {
+        "background": "#eff1f5",
+        "surface.background": "#e6e9ef",
+        "elevated_surface.background": "#e6e9ef",
+        "text": "#4c4f69",
+        "text.muted": "#5c5f77",
+        "text.placeholder": "#9ca0b0",
+        "text.accent": "#8839ef",
+        "text.disabled": "#acb0be",
+        "icon": "#4c4f69",
+        "icon.muted": "#8c8fa1",
+        "border": "#ccd0da",
+        "border.variant": "#bcc0cc",
+        "border.focused": "#7287fd",
+        "element.hover": "#ccd0da",
+        "element.active": "#bcc0cc",
+        "element.selected": "#bcc0cc",
+        "ghost_element.hover": "#ccd0da",
+        "ghost_element.active": "#bcc0cc",
+        "error": "#d20f39",
+        "warning": "#df8e1d",
+        "success": "#40a02b",
+        "link_text.hover": "#1e66f5",
+        "search.match_background": "#1e66f566"
+      }
+    },
+    {
+      "name": "Catppuccin Macchiato",
+      "appearance": "dark",
+      "style": {
+        "background": "#24273a",
+        "surface.background": "#1e2030",
+        "elevated_surface.background": "#1e2030",
+        "text": "#cad3f5",
+        "text.muted": "#b8c0e0",
+        "text.placeholder": "#6e738d",
+        "text.accent": "#c6a0f6",
+        "text.disabled": "#5b6078",
+        "icon": "#cad3f5",
+        "icon.muted": "#8087a2",
+        "border": "#363a4f",
+        "border.variant": "#494d64",
+        "border.focused": "#b7bdf8",
+        "element.hover": "#363a4f",
+        "element.active": "#494d64",
+        "element.selected": "#494d64",
+        "ghost_element.hover": "#363a4f",
+        "ghost_element.active": "#494d64",
+        "error": "#ed8796",
+        "warning": "#eed49f",
+        "success": "#a6da95",
+        "link_text.hover": "#8aadf4",
+        "search.match_background": "#8aadf466"
+      }
+    }
+  ]
+}

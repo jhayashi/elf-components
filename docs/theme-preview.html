@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ELF Theme Preview</title>
+<style>
+  /* Cupertino Light (default fallback) */
+  :root {
+    --background: #ffffff;
+    --surface-background: #f5f5f7;
+    --elevated-surface-background: #ebebed;
+    --text: #1d1d1f;
+    --text-muted: #6e6e73;
+    --text-placeholder: #a1a1a6;
+    --text-accent: #0066cc;
+    --text-disabled: #c7c7cc;
+    --icon: #1d1d1f;
+    --icon-muted: #6e6e73;
+    --border: #d1d1d6;
+    --border-variant: #c7c7cc;
+    --border-focused: #0066cc;
+    --element-hover: #f5f5f7;
+    --element-active: #ebebed;
+    --element-selected: #e3f2fd;
+    --ghost-element-hover: #f5f5f750;
+    --ghost-element-active: #ebebed80;
+    --error: #d32f2f;
+    --warning: #f57c00;
+    --success: #388e3c;
+    --link-text-hover: #0052a3;
+    --search-match-background: #fff9c4;
+  }
+  /* Cupertino Dark */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --background: #292a30;
+      --surface-background: #323238;
+      --elevated-surface-background: #3d3d43;
+      --text: #dfdfe0;
+      --text-muted: #92929d;
+      --text-placeholder: #6c6c70;
+      --text-accent: #4eb0ff;
+      --text-disabled: #48484d;
+      --icon: #dfdfe0;
+      --icon-muted: #92929d;
+      --border: #48484d;
+      --border-variant: #3d3d43;
+      --border-focused: #4eb0ff;
+      --element-hover: #3d3d43;
+      --element-active: #48484d;
+      --element-selected: #1e3a4f;
+      --ghost-element-hover: #3d3d4350;
+      --ghost-element-active: #48484d80;
+      --error: #ff5252;
+      --warning: #ffab40;
+      --success: #69f0ae;
+      --link-text-hover: #7dc4ff;
+      --search-match-background: #5a4f1a;
+    }
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { color-scheme: light dark; }
+  body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: var(--background);
+    color: var(--text);
+    padding: 2rem;
+    max-width: 52rem;
+    margin: 0 auto;
+    line-height: 1.5;
+  }
+  h1 { font-size: 1.4rem; margin-bottom: 1.5rem; font-weight: 600; }
+  h2 { font-size: 1.1rem; margin: 2rem 0 1rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 400; }
+  h3 { font-size: 0.9rem; margin: 1.5rem 0 0.5rem; color: var(--text-muted); }
+
+  .mono { font-family: ui-monospace, "SF Mono", Monaco, "Droid Sans Mono", monospace; }
+
+  /* ---- Theme Picker Controls ---- */
+  .theme-controls { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; margin-bottom: 1.5rem; padding: 1rem; background: var(--surface-background); border-radius: 8px; }
+  .theme-controls label { color: var(--text-muted); font-size: 0.83rem; }
+  .theme-controls select { font-family: inherit; font-size: 0.9rem; padding: 0.3rem 0.5rem; border: 1px solid var(--border); border-radius: 4px; background: var(--background); color: var(--text); }
+  .theme-controls button { font-family: inherit; font-size: 0.83rem; padding: 0.3rem 0.75rem; border: 1px solid var(--border); border-radius: 4px; background: var(--background); color: var(--text); cursor: pointer; }
+  .theme-controls button:hover { background: var(--element-hover); }
+  .theme-controls button.active { background: var(--text-accent); color: var(--background); border-color: var(--text-accent); }
+  .upload-label { font-size: 0.83rem; color: var(--text-accent); cursor: pointer; text-decoration: underline; }
+  #customFileInput { display: none; }
+
+  /* ---- Settings ---- */
+  .settings-section { margin-bottom: 1.5rem; }
+  .section-header { color: var(--text-muted); font-size: 0.83rem; text-transform: uppercase; letter-spacing: 0.05em; cursor: pointer; margin-bottom: 0.5rem; }
+  .ghost-btn { background: none; border: none; color: var(--text); font-size: 1rem; cursor: pointer; padding: 0.4rem 0.75rem; border-radius: 4px; }
+  .ghost-btn:hover { background: var(--ghost-element-hover); }
+  .ghost-btn.destructive { color: var(--error); }
+  .mnemonic-text { font-family: ui-monospace, "SF Mono", Monaco, monospace; color: var(--text); text-align: center; margin: 0.5rem 0; }
+
+  /* ---- Search ---- */
+  .search-input { color: var(--text); background: var(--background); border: 1px solid var(--border); border-radius: 4px; padding: 0.5rem 0.75rem; font-size: 1rem; width: 100%; outline: none; }
+  .search-input:focus { border-color: var(--border-focused); }
+  .search-input::placeholder { color: var(--text-placeholder); }
+  .clear-btn { color: var(--text-muted); cursor: pointer; border: none; background: none; font-size: 1.2rem; }
+  .clear-btn:hover { color: var(--text); }
+  .result-row { display: flex; align-items: center; gap: 0.25rem; padding: 0.35rem 0; font-size: 1rem; }
+  .result-datetime { font-family: ui-monospace, "SF Mono", Monaco, monospace; font-size: 0.83rem; color: var(--text-muted); }
+  .result-sep { color: var(--text-muted); }
+  .result-text { color: var(--text); }
+  .result-ical { color: var(--text-disabled); }
+  .search-match { background: var(--search-match-background); }
+  .recent-heading { color: var(--text-muted); font-size: 0.83rem; margin-bottom: 0.5rem; }
+
+  /* ---- Dialog ---- */
+  .dialog-backdrop { background: rgba(0,0,0,0.2); padding: 2rem; border-radius: 8px; margin: 1rem 0; }
+  .dialog { background: var(--elevated-surface-background); border: 1px solid var(--border-variant); border-radius: 8px; padding: 1.25rem; max-width: 20rem; }
+  .dialog-label { color: var(--text-muted); font-size: 0.83rem; margin-bottom: 0.25rem; }
+  .dialog-input { color: var(--text); background: var(--background); border: 1px solid var(--border-variant); border-radius: 4px; padding: 0.4rem 0.6rem; font-size: 1rem; width: 100%; margin-bottom: 0.75rem; }
+  .dialog-input:focus { border-color: var(--border-focused); outline: none; }
+  .dialog-actions { display: flex; justify-content: flex-end; gap: 0.5rem; }
+  .color-swatch { width: 28px; height: 28px; border-radius: 50%; border: 2px solid transparent; display: inline-block; margin-right: 0.25rem; }
+  .color-swatch.selected { border-color: var(--text); }
+
+  /* ---- Nav ---- */
+  .nav-link { color: var(--text-muted); text-decoration: none; padding: 0.25rem 0.5rem; }
+  .nav-link.active { color: var(--text); }
+  .menu-btn { color: var(--text); font-weight: 700; }
+
+  /* ---- Color Palette ---- */
+  .palette { display: grid; grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr)); gap: 0.75rem; margin: 1rem 0; }
+  .swatch { display: flex; align-items: center; gap: 0.5rem; }
+  .swatch-box { width: 2rem; height: 2rem; border-radius: 4px; border: 1px solid var(--border-variant); flex-shrink: 0; }
+  .swatch-label { font-size: 0.83rem; color: var(--text-muted); }
+  .swatch-value { font-family: ui-monospace, "SF Mono", Monaco, monospace; font-size: 0.72rem; color: var(--text-disabled); }
+
+  hr { border: none; border-top: 1px solid var(--border-variant); margin: 2rem 0; }
+  .surface-panel { background: var(--surface-background); padding: 1rem; border-radius: 8px; margin: 0.5rem 0; }
+
+  /* ---- Typography Scale ---- */
+  .type-scale-row { display: flex; align-items: baseline; gap: 1rem; padding: 0.5rem 0; border-bottom: 1px solid var(--border-variant); }
+  .type-scale-row:last-child { border-bottom: none; }
+  .type-scale-meta { flex-shrink: 0; min-width: 7rem; }
+  .type-scale-label { font-family: ui-monospace, "SF Mono", Monaco, monospace; font-size: 0.72rem; color: var(--text-accent); font-weight: 600; }
+  .type-scale-clamp { font-family: ui-monospace, "SF Mono", Monaco, monospace; font-size: 0.65rem; color: var(--text-disabled); word-break: break-all; }
+  .type-scale-sample { color: var(--text); line-height: 1.3; }
+  .type-scale-base-badge { display: inline-block; font-size: 0.6rem; color: var(--background); background: var(--text-accent); border-radius: 3px; padding: 0.1rem 0.3rem; margin-left: 0.4rem; vertical-align: middle; }
+
+  /* ---- Spacing Scale ---- */
+  .spacing-row { display: flex; align-items: center; gap: 1rem; padding: 0.5rem 0; }
+  .spacing-meta { flex-shrink: 0; min-width: 4rem; text-align: right; }
+  .spacing-label { font-family: ui-monospace, "SF Mono", Monaco, monospace; font-size: 0.83rem; color: var(--text-accent); font-weight: 600; }
+  .spacing-bar { height: 1.25rem; border-radius: 3px; background: var(--text-accent); opacity: 0.7; transition: width 0.3s ease; }
+  .spacing-clamp { font-family: ui-monospace, "SF Mono", Monaco, monospace; font-size: 0.65rem; color: var(--text-disabled); flex-shrink: 0; }
+
+  /* ---- Unused Keys Section ---- */
+  .keys-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 1rem 0; }
+  .keys-list { font-size: 0.83rem; color: var(--text-muted); }
+  .keys-list dt { font-family: ui-monospace, "SF Mono", Monaco, monospace; font-size: 0.72rem; color: var(--text); margin-top: 0.5rem; }
+  .keys-list dd { font-size: 0.72rem; color: var(--text-muted); margin-left: 0; margin-bottom: 0.25rem; }
+  .key-category { color: var(--text-accent); font-size: 0.83rem; font-weight: 600; margin-top: 1rem; margin-bottom: 0.25rem; }
+</style>
+</head>
+<body>
+
+<h1>ELF Theme Preview</h1>
+<p style="color: var(--text-muted); margin-bottom: 1rem;">This page uses the same CSS custom properties as ELF apps. Use the controls below to preview different themes.</p>
+
+<!-- Theme Picker Controls -->
+<div class="theme-controls">
+  <div>
+    <label for="themeSelect">Theme:</label>
+    <select id="themeSelect">
+      <option value="bandley" selected>Bandley</option>
+      <option value="catppuccin">Catppuccin</option>
+      <option value="flexoki">Flexoki</option>
+      <option value="github">GitHub</option>
+      <option value="one">One L/D</option>
+      <option value="smooth">Smooth</option>
+    </select>
+  </div>
+  <div>
+    <button id="lightBtn" class="active">Light</button>
+    <button id="darkBtn">Dark</button>
+    <button id="autoBtn">Auto</button>
+  </div>
+  <div>
+    <label class="upload-label" for="customFileInput">Upload Custom Theme</label>
+    <input type="file" id="customFileInput" accept=".json">
+  </div>
+</div>
+
+<!-- Color Palette -->
+<h2>Color Palette</h2>
+<div class="palette" id="paletteContainer">
+  <div class="swatch"><div class="swatch-box" style="background: var(--background)"></div><div><div class="swatch-label">--background</div><div class="swatch-value">Page bg</div></div></div>
+  <div class="swatch"><div class="swatch-box" style="background: var(--surface-background)"></div><div><div class="swatch-label">--surface-background</div><div class="swatch-value">Panel bg</div></div></div>
+  <div class="swatch"><div class="swatch-box" style="background: var(--elevated-surface-background)"></div><div><div class="swatch-label">--elevated-surface-background</div><div class="swatch-value">Dialog bg</div></div></div>
+  <div class="swatch"><div class="swatch-box" style="background: var(--text)"></div><div><div class="swatch-label">--text</div><div class="swatch-value">Primary text</div></div></div>
+  <div class="swatch"><div class="swatch-box" style="background: var(--text-muted)"></div><div><div class="swatch-label">--text-muted</div><div class="swatch-value">Secondary text</div></div></div>
+  <div class="swatch"><div class="swatch-box" style="background: var(--text-placeholder)"></div><div><div class="swatch-label">--text-placeholder</div><div class="swatch-value">Placeholder</div></div></div>
+  <div class="swatch"><div class="swatch-box" style="background: var(--text-accent)"></div><div><div class="swatch-label">--text-accent</div><div class="swatch-value">Accent / links</div></div></div>
+  <div class="swatch"><div class="swatch-box" style="background: var(--text-disabled)"></div><div><div class="swatch-label">--text-disabled</div><div class="swatch-value">Disabled</div></div></div>
+  <div class="swatch"><div class="swatch-box" style="background: var(--border)"></div><div><div class="swatch-label">--border</div><div class="swatch-value">Borders</div></div></div>
+  <div class="swatch"><div class="swatch-box" style="background: var(--border-variant)"></div><div><div class="swatch-label">--border-variant</div><div class="swatch-value">Subtle borders</div></div></div>
+  <div class="swatch"><div class="swatch-box" style="background: var(--border-focused)"></div><div><div class="swatch-label">--border-focused</div><div class="swatch-value">Focus ring</div></div></div>
+  <div class="swatch"><div class="swatch-box" style="background: var(--element-hover)"></div><div><div class="swatch-label">--element-hover</div><div class="swatch-value">Hover bg</div></div></div>
+  <div class="swatch"><div class="swatch-box" style="background: var(--ghost-element-hover)"></div><div><div class="swatch-label">--ghost-element-hover</div><div class="swatch-value">Ghost hover</div></div></div>
+  <div class="swatch"><div class="swatch-box" style="background: var(--error)"></div><div><div class="swatch-label">--error</div><div class="swatch-value">Destructive</div></div></div>
+  <div class="swatch"><div class="swatch-box" style="background: var(--warning)"></div><div><div class="swatch-label">--warning</div><div class="swatch-value">Warning</div></div></div>
+  <div class="swatch"><div class="swatch-box" style="background: var(--success)"></div><div><div class="swatch-label">--success</div><div class="swatch-value">Success</div></div></div>
+  <div class="swatch"><div class="swatch-box" style="background: var(--link-text-hover)"></div><div><div class="swatch-label">--link-text-hover</div><div class="swatch-value">Links</div></div></div>
+  <div class="swatch"><div class="swatch-box" style="background: var(--search-match-background)"></div><div><div class="swatch-label">--search-match-background</div><div class="swatch-value">Search highlight</div></div></div>
+</div>
+
+<hr>
+
+<!-- Typography Scale -->
+<h2>Typography Scale</h2>
+<p style="color: var(--text-muted); font-size: 0.83rem; margin-bottom: 1rem;">
+  Utopia fluid type scale (320px - 1240px viewport). Based on a 16px / 1.2 ratio at min and 18px / 1.25 ratio at max.
+</p>
+<div class="surface-panel">
+  <div class="type-scale-row">
+    <div class="type-scale-meta">
+      <div class="type-scale-label">step -2</div>
+      <div class="type-scale-clamp">clamp(0.6944rem, 0.6855rem + 0.0446vw, 0.72rem)</div>
+    </div>
+    <div class="type-scale-sample" style="font-size: clamp(0.6944rem, 0.6855rem + 0.0446vw, 0.72rem);">The quick brown fox jumps over the lazy dog</div>
+  </div>
+  <div class="type-scale-row">
+    <div class="type-scale-meta">
+      <div class="type-scale-label">step -1</div>
+      <div class="type-scale-clamp">clamp(0.8331rem, 0.8099rem + 0.1163vw, 0.9rem)</div>
+    </div>
+    <div class="type-scale-sample" style="font-size: clamp(0.8331rem, 0.8099rem + 0.1163vw, 0.9rem);">The quick brown fox jumps over the lazy dog</div>
+  </div>
+  <div class="type-scale-row">
+    <div class="type-scale-meta">
+      <div class="type-scale-label">step 0 <span class="type-scale-base-badge">BASE</span></div>
+      <div class="type-scale-clamp">clamp(1rem, 0.9565rem + 0.2174vw, 1.125rem)</div>
+    </div>
+    <div class="type-scale-sample" style="font-size: clamp(1rem, 0.9565rem + 0.2174vw, 1.125rem);">The quick brown fox jumps over the lazy dog</div>
+  </div>
+  <div class="type-scale-row">
+    <div class="type-scale-meta">
+      <div class="type-scale-label">step 1</div>
+      <div class="type-scale-clamp">clamp(1.2rem, 1.1283rem + 0.3587vw, 1.4063rem)</div>
+    </div>
+    <div class="type-scale-sample" style="font-size: clamp(1.2rem, 1.1283rem + 0.3587vw, 1.4063rem);">The quick brown fox jumps over the lazy dog</div>
+  </div>
+  <div class="type-scale-row">
+    <div class="type-scale-meta">
+      <div class="type-scale-label">step 2</div>
+      <div class="type-scale-clamp">clamp(1.44rem, 1.3293rem + 0.5533vw, 1.7581rem)</div>
+    </div>
+    <div class="type-scale-sample" style="font-size: clamp(1.44rem, 1.3293rem + 0.5533vw, 1.7581rem);">The quick brown fox jumps over the lazy dog</div>
+  </div>
+  <div class="type-scale-row">
+    <div class="type-scale-meta">
+      <div class="type-scale-label">step 3</div>
+      <div class="type-scale-clamp">clamp(1.7281rem, 1.5649rem + 0.8163vw, 2.1975rem)</div>
+    </div>
+    <div class="type-scale-sample" style="font-size: clamp(1.7281rem, 1.5649rem + 0.8163vw, 2.1975rem);">The quick brown fox jumps</div>
+  </div>
+  <div class="type-scale-row">
+    <div class="type-scale-meta">
+      <div class="type-scale-label">step 4</div>
+      <div class="type-scale-clamp">clamp(2.0738rem, 1.8396rem + 1.1707vw, 2.7469rem)</div>
+    </div>
+    <div class="type-scale-sample" style="font-size: clamp(2.0738rem, 1.8396rem + 1.1707vw, 2.7469rem);">The quick brown fox</div>
+  </div>
+  <div class="type-scale-row">
+    <div class="type-scale-meta">
+      <div class="type-scale-label">step 5</div>
+      <div class="type-scale-clamp">clamp(2.4881rem, 2.1594rem + 1.6435vw, 3.4331rem)</div>
+    </div>
+    <div class="type-scale-sample" style="font-size: clamp(2.4881rem, 2.1594rem + 1.6435vw, 3.4331rem);">The quick brown</div>
+  </div>
+</div>
+
+<hr>
+
+<!-- Spacing Scale -->
+<h2>Spacing Scale</h2>
+<p style="color: var(--text-muted); font-size: 0.83rem; margin-bottom: 1rem;">
+  Utopia fluid spacing scale (webSpacing baseline). Visual bar width represents the computed spacing value.
+</p>
+<div class="surface-panel">
+  <div class="spacing-row">
+    <div class="spacing-meta"><div class="spacing-label">xxxs</div></div>
+    <div class="spacing-bar" style="width: clamp(0.25rem, 0.2283rem + 0.1087vw, 0.3125rem);"></div>
+    <div class="spacing-clamp">clamp(0.25rem, 0.2283rem + 0.1087vw, 0.3125rem)</div>
+  </div>
+  <div class="spacing-row">
+    <div class="spacing-meta"><div class="spacing-label">xxs</div></div>
+    <div class="spacing-bar" style="width: clamp(0.5rem, 0.4783rem + 0.1087vw, 0.5625rem);"></div>
+    <div class="spacing-clamp">clamp(0.5rem, 0.4783rem + 0.1087vw, 0.5625rem)</div>
+  </div>
+  <div class="spacing-row">
+    <div class="spacing-meta"><div class="spacing-label">xs</div></div>
+    <div class="spacing-bar" style="width: clamp(0.75rem, 0.7065rem + 0.2174vw, 0.875rem);"></div>
+    <div class="spacing-clamp">clamp(0.75rem, 0.7065rem + 0.2174vw, 0.875rem)</div>
+  </div>
+  <div class="spacing-row">
+    <div class="spacing-meta"><div class="spacing-label">s</div></div>
+    <div class="spacing-bar" style="width: clamp(1rem, 0.9565rem + 0.2174vw, 1.125rem);"></div>
+    <div class="spacing-clamp">clamp(1rem, 0.9565rem + 0.2174vw, 1.125rem)</div>
+  </div>
+  <div class="spacing-row">
+    <div class="spacing-meta"><div class="spacing-label">m</div></div>
+    <div class="spacing-bar" style="width: clamp(1.5rem, 1.4348rem + 0.3261vw, 1.6875rem);"></div>
+    <div class="spacing-clamp">clamp(1.5rem, 1.4348rem + 0.3261vw, 1.6875rem)</div>
+  </div>
+  <div class="spacing-row">
+    <div class="spacing-meta"><div class="spacing-label">l</div></div>
+    <div class="spacing-bar" style="width: clamp(2rem, 1.913rem + 0.4348vw, 2.25rem);"></div>
+    <div class="spacing-clamp">clamp(2rem, 1.913rem + 0.4348vw, 2.25rem)</div>
+  </div>
+  <div class="spacing-row">
+    <div class="spacing-meta"><div class="spacing-label">xl</div></div>
+    <div class="spacing-bar" style="width: clamp(3rem, 2.8696rem + 0.6522vw, 3.375rem);"></div>
+    <div class="spacing-clamp">clamp(3rem, 2.8696rem + 0.6522vw, 3.375rem)</div>
+  </div>
+  <div class="spacing-row">
+    <div class="spacing-meta"><div class="spacing-label">xxl</div></div>
+    <div class="spacing-bar" style="width: clamp(4rem, 3.8261rem + 0.8696vw, 4.5rem);"></div>
+    <div class="spacing-clamp">clamp(4rem, 3.8261rem + 0.8696vw, 4.5rem)</div>
+  </div>
+  <div class="spacing-row">
+    <div class="spacing-meta"><div class="spacing-label">xxxl</div></div>
+    <div class="spacing-bar" style="width: clamp(6rem, 5.7391rem + 1.3043vw, 6.75rem);"></div>
+    <div class="spacing-clamp">clamp(6rem, 5.7391rem + 1.3043vw, 6.75rem)</div>
+  </div>
+</div>
+
+<hr>
+
+<!-- Search -->
+<h2>Search</h2>
+<div style="margin-bottom: 1.5rem;">
+  <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+    <input class="search-input" type="text" placeholder="Search..." value="theme">
+    <button class="clear-btn">&times;</button>
+  </div>
+  <div class="result-row">
+    <span class="result-datetime">02/14 09:00</span>
+    <span class="result-sep"> - </span>
+    <span class="result-text">Updated <span class="search-match">theme</span> configuration</span>
+  </div>
+  <div class="result-row">
+    <span class="result-datetime">02/13 15:30</span>
+    <span class="result-sep"> - </span>
+    <span class="result-text">Custom <span class="search-match">theme</span> upload feature</span>
+  </div>
+
+  <h3 class="recent-heading">Recent</h3>
+  <div class="result-row">
+    <span class="result-datetime">02/14 14:50</span>
+    <span class="result-sep"> - </span>
+    <span class="result-text">Another entry with content</span>
+  </div>
+</div>
+
+<hr>
+
+<!-- Dialog -->
+<h2>Dialog</h2>
+<div class="dialog-backdrop">
+  <div class="dialog">
+    <div class="dialog-label">Date</div>
+    <input class="dialog-input" type="text" value="2026-02-14">
+    <div class="dialog-label">Time</div>
+    <input class="dialog-input" type="text" value="14:50">
+    <div class="dialog-label">Color</div>
+    <div style="margin-bottom: 0.75rem;">
+      <span class="color-swatch" style="background: var(--error)"></span>
+      <span class="color-swatch selected" style="background: var(--text-accent)"></span>
+      <span class="color-swatch" style="background: var(--success)"></span>
+      <span class="color-swatch" style="background: var(--warning)"></span>
+    </div>
+    <div class="dialog-actions">
+      <button class="ghost-btn">Cancel</button>
+      <button class="ghost-btn">Done</button>
+    </div>
+  </div>
+</div>
+
+<hr>
+
+<!-- Navigation -->
+<h2>Navigation</h2>
+<div style="display: flex; gap: 1rem; align-items: center;">
+  <span class="menu-btn">&#x22EF;</span>
+  <a class="nav-link active" href="#">Home</a>
+  <a class="nav-link" href="#">Search</a>
+  <a class="nav-link" href="#">Settings</a>
+  <a class="nav-link" href="#">About</a>
+</div>
+
+<hr>
+
+<!-- Settings -->
+<h2>Settings</h2>
+<div class="settings-section">
+  <button class="ghost-btn">Show Mnemonic</button>
+  <div class="mnemonic-text">abandon ability able about above absent absorb abstract</div>
+  <button class="ghost-btn">Restore Owner</button>
+  <button class="ghost-btn destructive">Reset Owner</button>
+</div>
+
+<hr>
+
+<!-- Available Zed Theme Keys -->
+<h2>Available Zed Theme Keys</h2>
+<p style="color: var(--text-muted); font-size: 0.83rem; margin-bottom: 1rem;">
+  The full Zed theme schema has ~150 style keys. ELF uses 22 of them.
+</p>
+
+<div class="keys-grid">
+  <div>
+    <div class="key-category">Used by ELF (22)</div>
+    <dl class="keys-list">
+      <dt>background</dt><dd>Page background</dd>
+      <dt>surface.background</dt><dd>Panel/surface background</dd>
+      <dt>elevated_surface.background</dt><dd>Dialog/elevated surfaces</dd>
+      <dt>text</dt><dd>Primary text</dd>
+      <dt>text.muted</dt><dd>Secondary/muted text</dd>
+      <dt>text.placeholder</dt><dd>Input placeholders</dd>
+      <dt>text.accent</dt><dd>Accent text, links</dd>
+      <dt>text.disabled</dt><dd>Disabled text</dd>
+      <dt>icon</dt><dd>Icons</dd>
+      <dt>icon.muted</dt><dd>Muted icons</dd>
+      <dt>border</dt><dd>Borders</dd>
+      <dt>border.variant</dt><dd>Subtle/variant borders</dd>
+      <dt>border.focused</dt><dd>Focus ring color</dd>
+      <dt>element.hover</dt><dd>Interactive element hover</dd>
+      <dt>element.active</dt><dd>Interactive element active/pressed</dd>
+      <dt>element.selected</dt><dd>Selected element</dd>
+      <dt>ghost_element.hover</dt><dd>Ghost button hover</dd>
+      <dt>ghost_element.active</dt><dd>Ghost button active</dd>
+      <dt>error</dt><dd>Error/destructive actions</dd>
+      <dt>warning</dt><dd>Warning states</dd>
+      <dt>success</dt><dd>Success states</dd>
+      <dt>link_text.hover</dt><dd>Link hover color</dd>
+      <dt>search.match_background</dt><dd>Search result highlight</dd>
+    </dl>
+  </div>
+  <div>
+    <div class="key-category">Available but Unused</div>
+    <dl class="keys-list">
+      <dt>syntax.*</dt><dd>~30 keys for code syntax highlighting (keywords, strings, comments, functions, etc.). Could be useful for code block styling.</dd>
+      <dt>terminal.*</dt><dd>~20 keys for terminal colors (ANSI colors, cursor, selection).</dd>
+      <dt>editor.*</dt><dd>~15 keys for editor chrome (gutter, line numbers, active line, indent guides, wrap guide).</dd>
+      <dt>tab.*</dt><dd>~8 keys for tab bar styling (active, inactive, unfocused).</dd>
+      <dt>toolbar.*</dt><dd>~4 keys for toolbar backgrounds.</dd>
+      <dt>panel.*</dt><dd>~4 keys for side panel backgrounds and borders.</dd>
+      <dt>scrollbar.*</dt><dd>~6 keys for scrollbar track, thumb, and borders.</dd>
+      <dt>status_bar.*</dt><dd>~4 keys for status bar background and text.</dd>
+      <dt>title_bar.*</dt><dd>~4 keys for title bar styling.</dd>
+      <dt>conflict.*</dt><dd>Merge conflict markers (current, incoming).</dd>
+      <dt>created/deleted/modified.*</dt><dd>Git diff highlighting colors.</dd>
+      <dt>predictive.*</dt><dd>AI/autocomplete prediction text colors.</dd>
+      <dt>players.*</dt><dd>Collaborative editing cursor colors (up to 8 players).</dd>
+      <dt>hint/info</dt><dd>Diagnostic hint and info colors (ELF uses error + warning).</dd>
+    </dl>
+  </div>
+</div>
+
+<script>
+// Bundled theme style data (only the 22 keys ELF uses)
+const themes = {
+  "one": {
+    light: {"background":"#fafafa","surface.background":"#ebebec","elevated_surface.background":"#ebebec","text":"#242529","text.muted":"#58585a","text.placeholder":"#7e8086","text.accent":"#5c78e2","text.disabled":"#7e8086","icon":"#242529","icon.muted":"#58585a","border":"#c9c9ca","border.variant":"#dfdfe0","border.focused":"#7d82e8","element.hover":"#dfdfe0","element.active":"#cacaca","element.selected":"#cacaca","ghost_element.hover":"#dfdfe0","ghost_element.active":"#cacaca","error":"#d36151","warning":"#a48819","success":"#669f59","link_text.hover":"#5c78e2","search.match_background":"#5c79e266"},
+    dark: {"background":"#282c33","surface.background":"#2f343e","elevated_surface.background":"#2f343e","text":"#dce0e5","text.muted":"#a9afbc","text.placeholder":"#878a98","text.accent":"#74ade8","text.disabled":"#878a98","icon":"#dce0e5","icon.muted":"#a9afbc","border":"#464b57","border.variant":"#363c46","border.focused":"#47679e","element.hover":"#363c46","element.active":"#454a56","element.selected":"#454a56","ghost_element.hover":"#363c46","ghost_element.active":"#454a56","error":"#d07277","warning":"#dec184","success":"#a1c181","link_text.hover":"#74ade8","search.match_background":"#74ade866"}
+  },
+  "catppuccin": {
+    light: {"background":"#eff1f5","surface.background":"#e6e9ef","elevated_surface.background":"#e6e9ef","text":"#4c4f69","text.muted":"#5c5f77","text.placeholder":"#9ca0b0","text.accent":"#8839ef","text.disabled":"#acb0be","icon":"#4c4f69","icon.muted":"#8c8fa1","border":"#ccd0da","border.variant":"#bcc0cc","border.focused":"#7287fd","element.hover":"#ccd0da","element.active":"#bcc0cc","element.selected":"#bcc0cc","ghost_element.hover":"#ccd0da","ghost_element.active":"#bcc0cc","error":"#d20f39","warning":"#df8e1d","success":"#40a02b","link_text.hover":"#1e66f5","search.match_background":"#1e66f566"},
+    dark: {"background":"#24273a","surface.background":"#1e2030","elevated_surface.background":"#1e2030","text":"#cad3f5","text.muted":"#b8c0e0","text.placeholder":"#6e738d","text.accent":"#c6a0f6","text.disabled":"#5b6078","icon":"#cad3f5","icon.muted":"#8087a2","border":"#363a4f","border.variant":"#494d64","border.focused":"#b7bdf8","element.hover":"#363a4f","element.active":"#494d64","element.selected":"#494d64","ghost_element.hover":"#363a4f","ghost_element.active":"#494d64","error":"#ed8796","warning":"#eed49f","success":"#a6da95","link_text.hover":"#8aadf4","search.match_background":"#8aadf466"}
+  },
+  "github": {
+    light: {"background":"#ffffff","surface.background":"#f6f8fa","elevated_surface.background":"#ffffff","text":"#1f2328","text.muted":"#59636e","text.placeholder":"#818b98","text.accent":"#0969da","text.disabled":"#818b98","icon":"#1f2328","icon.muted":"#59636e","border":"#d1d9e0","border.variant":"#e6eaef","border.focused":"#0969da","element.hover":"#f6f8fa","element.active":"#eff2f5","element.selected":"#eff2f5","ghost_element.hover":"#f6f8fa","ghost_element.active":"#eff2f5","error":"#cf222e","warning":"#9a6700","success":"#1a7f37","link_text.hover":"#0550ae","search.match_background":"#fff8c5"},
+    dark: {"background":"#0d1117","surface.background":"#151b23","elevated_surface.background":"#161b22","text":"#f0f6fc","text.muted":"#9198a1","text.placeholder":"#656c76","text.accent":"#58a6ff","text.disabled":"#656c76","icon":"#f0f6fc","icon.muted":"#9198a1","border":"#2f3742","border.variant":"#212830","border.focused":"#58a6ff","element.hover":"#151b23","element.active":"#212830","element.selected":"#212830","ghost_element.hover":"#151b23","ghost_element.active":"#212830","error":"#f85149","warning":"#d29922","success":"#3fb950","link_text.hover":"#79c0ff","search.match_background":"#f8e3a14d"}
+  },
+  "smooth": {
+    light: {"background":"#faf8f5","surface.background":"#edeae5","elevated_surface.background":"#e5e2dd","text":"#2c2825","text.muted":"#6b6360","text.placeholder":"#9a9390","text.accent":"#4a8b9e","text.disabled":"#b8b3ae","icon":"#2c2825","icon.muted":"#6b6360","border":"#d4d0ca","border.variant":"#c5c0ba","border.focused":"#4a8b9e","element.hover":"#e5e2dd","element.active":"#d4d0ca","element.selected":"#d8ebe8","ghost_element.hover":"#e5e2dd50","ghost_element.active":"#d4d0ca80","error":"#c94747","warning":"#d4863e","success":"#5d9464","link_text.hover":"#3a6d7c","search.match_background":"#f5e6a8"},
+    dark: {"background":"#1e1c1a","surface.background":"#2a2826","elevated_surface.background":"#353330","text":"#d4d0cc","text.muted":"#8f8a85","text.placeholder":"#6b6660","text.accent":"#6eb4c7","text.disabled":"#4d4a47","icon":"#d4d0cc","icon.muted":"#8f8a85","border":"#3d3a37","border.variant":"#4d4a47","border.focused":"#6eb4c7","element.hover":"#353330","element.active":"#3d3a37","element.selected":"#2d4a47","ghost_element.hover":"#35333050","ghost_element.active":"#3d3a3780","error":"#e87070","warning":"#e8a760","success":"#7cb083","link_text.hover":"#8ec5d6","search.match_background":"#5a4d20"}
+  },
+  "bandley": {
+    light: {"background":"#ffffff","surface.background":"#f5f5f7","elevated_surface.background":"#ebebed","text":"#1d1d1f","text.muted":"#6e6e73","text.placeholder":"#a1a1a6","text.accent":"#0066cc","text.disabled":"#c7c7cc","icon":"#1d1d1f","icon.muted":"#6e6e73","border":"#d1d1d6","border.variant":"#c7c7cc","border.focused":"#0066cc","element.hover":"#f5f5f7","element.active":"#ebebed","element.selected":"#e3f2fd","ghost_element.hover":"#f5f5f750","ghost_element.active":"#ebebed80","error":"#d32f2f","warning":"#f57c00","success":"#388e3c","link_text.hover":"#0052a3","search.match_background":"#fff9c4"},
+    dark: {"background":"#292a30","surface.background":"#323238","elevated_surface.background":"#3d3d43","text":"#dfdfe0","text.muted":"#92929d","text.placeholder":"#6c6c70","text.accent":"#4eb0ff","text.disabled":"#48484d","icon":"#dfdfe0","icon.muted":"#92929d","border":"#48484d","border.variant":"#3d3d43","border.focused":"#4eb0ff","element.hover":"#3d3d43","element.active":"#48484d","element.selected":"#1e3a4f","ghost_element.hover":"#3d3d4350","ghost_element.active":"#48484d80","error":"#ff5252","warning":"#ffab40","success":"#69f0ae","link_text.hover":"#7dc4ff","search.match_background":"#5a4f1a"}
+  },
+  "flexoki": {
+    light: {"background":"#fffcf0","surface.background":"#f2f0e5","elevated_surface.background":"#e6e4d9","text":"#100f0f","text.muted":"#6f6e69","text.placeholder":"#878580","text.accent":"#205ea6","text.disabled":"#b7b5ac","icon":"#100f0f","icon.muted":"#6f6e69","border":"#e6e4d9","border.variant":"#cecdc3","border.focused":"#205ea6","element.hover":"#e6e4d9","element.active":"#cecdc3","element.selected":"#cecdc3","ghost_element.hover":"#e6e4d9","ghost_element.active":"#cecdc3","error":"#af3029","warning":"#ad8301","success":"#66800b","link_text.hover":"#4385be","search.match_background":"#d0a21544"},
+    dark: {"background":"#100f0f","surface.background":"#1c1b1a","elevated_surface.background":"#282726","text":"#cecdc3","text.muted":"#878580","text.placeholder":"#575653","text.accent":"#4385be","text.disabled":"#403e3c","icon":"#cecdc3","icon.muted":"#878580","border":"#282726","border.variant":"#343331","border.focused":"#4385be","element.hover":"#282726","element.active":"#343331","element.selected":"#343331","ghost_element.hover":"#282726","ghost_element.active":"#343331","error":"#d14d41","warning":"#d0a215","success":"#879a39","link_text.hover":"#4385be","search.match_background":"#d0a21544"}
+  }
+};
+
+let currentThemeId = "bandley";
+let currentMode = "auto"; // "light", "dark", or "auto"
+let customThemeData = null;
+
+function applyStyle(style) {
+  const root = document.documentElement;
+  for (const [key, value] of Object.entries(style)) {
+    root.style.setProperty("--" + key.replaceAll(".", "-"), value);
+  }
+}
+
+function getEffectiveAppearance() {
+  if (currentMode === "auto") {
+    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+  return currentMode;
+}
+
+function applyCurrentTheme() {
+  const themeData = currentThemeId === "custom" ? customThemeData : themes[currentThemeId];
+  if (!themeData) return;
+  const appearance = getEffectiveAppearance();
+  const style = themeData[appearance] || themeData.light || themeData.dark;
+  if (style) applyStyle(style);
+  updateModeButtons();
+}
+
+function updateModeButtons() {
+  const appearance = getEffectiveAppearance();
+  document.getElementById("lightBtn").classList.toggle("active", currentMode === "light" || (currentMode === "auto" && appearance === "light"));
+  document.getElementById("darkBtn").classList.toggle("active", currentMode === "dark" || (currentMode === "auto" && appearance === "dark"));
+  document.getElementById("autoBtn").classList.toggle("active", currentMode === "auto");
+  // Reset active on forced modes when auto
+  if (currentMode !== "auto") {
+    document.getElementById("autoBtn").classList.remove("active");
+  }
+  if (currentMode === "auto") {
+    document.getElementById("lightBtn").classList.remove("active");
+    document.getElementById("darkBtn").classList.remove("active");
+  }
+}
+
+// Theme select
+document.getElementById("themeSelect").addEventListener("change", function(e) {
+  currentThemeId = e.target.value;
+  applyCurrentTheme();
+});
+
+// Light/Dark/Auto buttons
+document.getElementById("lightBtn").addEventListener("click", function() {
+  currentMode = "light";
+  applyCurrentTheme();
+});
+document.getElementById("darkBtn").addEventListener("click", function() {
+  currentMode = "dark";
+  applyCurrentTheme();
+});
+document.getElementById("autoBtn").addEventListener("click", function() {
+  currentMode = "auto";
+  applyCurrentTheme();
+});
+
+// Custom file upload
+document.getElementById("customFileInput").addEventListener("change", function(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function() {
+    try {
+      const parsed = JSON.parse(reader.result);
+      if (!parsed.themes || !Array.isArray(parsed.themes)) {
+        alert("Invalid theme file: missing 'themes' array.");
+        return;
+      }
+      customThemeData = {};
+      for (const t of parsed.themes) {
+        if (t.appearance && t.style) {
+          customThemeData[t.appearance] = t.style;
+        }
+      }
+      currentThemeId = "custom";
+      // Add custom option to select if not present
+      const select = document.getElementById("themeSelect");
+      let customOpt = select.querySelector('option[value="custom"]');
+      if (!customOpt) {
+        customOpt = document.createElement("option");
+        customOpt.value = "custom";
+        customOpt.textContent = parsed.name || "Custom";
+        select.appendChild(customOpt);
+      } else {
+        customOpt.textContent = parsed.name || "Custom";
+      }
+      select.value = "custom";
+      applyCurrentTheme();
+    } catch (err) {
+      alert("Failed to parse theme file: " + err.message);
+    }
+  };
+  reader.readAsText(file);
+  e.target.value = "";
+});
+
+// Listen for OS color scheme changes
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function() {
+  if (currentMode === "auto") applyCurrentTheme();
+});
+
+// Initial mode buttons state
+updateModeButtons();
+</script>
+
+</body>
+</html>

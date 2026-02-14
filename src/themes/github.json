@@ -1,0 +1,65 @@
+{
+  "$schema": "https://zed.dev/schema/themes/v0.2.0.json",
+  "name": "GitHub",
+  "author": "GitHub",
+  "themes": [
+    {
+      "name": "GitHub Light",
+      "appearance": "light",
+      "style": {
+        "background": "#ffffff",
+        "surface.background": "#f6f8fa",
+        "elevated_surface.background": "#ffffff",
+        "text": "#1f2328",
+        "text.muted": "#59636e",
+        "text.placeholder": "#818b98",
+        "text.accent": "#0969da",
+        "text.disabled": "#818b98",
+        "icon": "#1f2328",
+        "icon.muted": "#59636e",
+        "border": "#d1d9e0",
+        "border.variant": "#e6eaef",
+        "border.focused": "#0969da",
+        "element.hover": "#f6f8fa",
+        "element.active": "#eff2f5",
+        "element.selected": "#eff2f5",
+        "ghost_element.hover": "#f6f8fa",
+        "ghost_element.active": "#eff2f5",
+        "error": "#cf222e",
+        "warning": "#9a6700",
+        "success": "#1a7f37",
+        "link_text.hover": "#0550ae",
+        "search.match_background": "#fff8c5"
+      }
+    },
+    {
+      "name": "GitHub Dark",
+      "appearance": "dark",
+      "style": {
+        "background": "#0d1117",
+        "surface.background": "#151b23",
+        "elevated_surface.background": "#161b22",
+        "text": "#f0f6fc",
+        "text.muted": "#9198a1",
+        "text.placeholder": "#656c76",
+        "text.accent": "#58a6ff",
+        "text.disabled": "#656c76",
+        "icon": "#f0f6fc",
+        "icon.muted": "#9198a1",
+        "border": "#2f3742",
+        "border.variant": "#212830",
+        "border.focused": "#58a6ff",
+        "element.hover": "#151b23",
+        "element.active": "#212830",
+        "element.selected": "#212830",
+        "ghost_element.hover": "#151b23",
+        "ghost_element.active": "#212830",
+        "error": "#f85149",
+        "warning": "#d29922",
+        "success": "#3fb950",
+        "link_text.hover": "#79c0ff",
+        "search.match_background": "#f8e3a14d"
+      }
+    }
+  ]
+}

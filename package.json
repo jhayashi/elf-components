@@ -1,0 +1,18 @@
+{
+  "name": "elf-components",
+  "version": "0.1.0",
+  "type": "module",
+  "exports": {
+    "./theme": "./src/theme.ts",
+    "./tokens": "./src/Tokens.stylex.ts",
+    "./themes": "./src/Themes.ts",
+    "./theme-files": "./src/themes/index.ts",
+    "./globals.css": "./src/globals.css"
+  },
+  "peerDependencies": {
+    "@stylexjs/stylex": "^0.17.5"
+  },
+  "dependencies": {
+    "typescript": "^5.9.3"
+  }
+}

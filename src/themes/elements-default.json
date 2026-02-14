@@ -1,0 +1,65 @@
+{
+  "$schema": "https://zed.dev/schema/themes/v0.2.0.json",
+  "name": "One",
+  "author": "Zed Industries",
+  "themes": [
+    {
+      "name": "One Light",
+      "appearance": "light",
+      "style": {
+        "background": "#fafafa",
+        "surface.background": "#ebebec",
+        "elevated_surface.background": "#ebebec",
+        "text": "#242529",
+        "text.muted": "#58585a",
+        "text.placeholder": "#7e8086",
+        "text.accent": "#5c78e2",
+        "text.disabled": "#7e8086",
+        "icon": "#242529",
+        "icon.muted": "#58585a",
+        "border": "#c9c9ca",
+        "border.variant": "#dfdfe0",
+        "border.focused": "#7d82e8",
+        "element.hover": "#dfdfe0",
+        "element.active": "#cacaca",
+        "element.selected": "#cacaca",
+        "ghost_element.hover": "#dfdfe0",
+        "ghost_element.active": "#cacaca",
+        "error": "#d36151",
+        "warning": "#a48819",
+        "success": "#669f59",
+        "link_text.hover": "#5c78e2",
+        "search.match_background": "#5c79e266"
+      }
+    },
+    {
+      "name": "One Dark",
+      "appearance": "dark",
+      "style": {
+        "background": "#282c33",
+        "surface.background": "#2f343e",
+        "elevated_surface.background": "#2f343e",
+        "text": "#dce0e5",
+        "text.muted": "#a9afbc",
+        "text.placeholder": "#878a98",
+        "text.accent": "#74ade8",
+        "text.disabled": "#878a98",
+        "icon": "#dce0e5",
+        "icon.muted": "#a9afbc",
+        "border": "#464b57",
+        "border.variant": "#363c46",
+        "border.focused": "#47679e",
+        "element.hover": "#363c46",
+        "element.active": "#454a56",
+        "element.selected": "#454a56",
+        "ghost_element.hover": "#363c46",
+        "ghost_element.active": "#454a56",
+        "error": "#d07277",
+        "warning": "#dec184",
+        "success": "#a1c181",
+        "link_text.hover": "#74ade8",
+        "search.match_background": "#74ade866"
+      }
+    }
+  ]
+}
