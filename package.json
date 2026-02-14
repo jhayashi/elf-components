@@ -1,18 +1,29 @@
 {
   "name": "elf-components",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "exports": {
     "./theme": "./src/theme.ts",
     "./tokens": "./src/Tokens.stylex.ts",
     "./themes": "./src/Themes.ts",
     "./theme-files": "./src/themes/index.ts",
-    "./globals.css": "./src/globals.css"
+    "./globals.css": "./src/globals.css",
+    "./menu": "./src/Menu.tsx",
+    "./toast": "./src/Toast.tsx",
+    "./page-styles": "./src/PageStyles.stylex.ts",
+    "./about": "./src/About.tsx",
+    "./settings/theme-picker": "./src/settings/ThemePicker.tsx",
+    "./settings/account": "./src/settings/AccountSection.tsx",
+    "./settings/sync": "./src/settings/SyncSection.tsx"
   },
   "peerDependencies": {
-    "@stylexjs/stylex": "^0.17.5"
+    "@stylexjs/stylex": "^0.17.5",
+    "react": "^18.0.0 || ^19.0.0"
   },
   "dependencies": {
     "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.14"
   }
 }
