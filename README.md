@@ -6,7 +6,7 @@ Shared UI patterns and reusable components for ELF (Evolu Local-First) applicati
 
 This repo provides common UI building blocks used across local-first apps built with the same stack:
 
-- [Elements (eme)](https://github.com/jhayashi/eme) - Calendar and notes
+- [Elements (eme)](https://github.com/jhayashi/eme) - Privacy focused local first planner.
 - [BlazeMarks](https://github.com/jhayashi/blazemarks) - Bookmark manager
 
 ## Stack
