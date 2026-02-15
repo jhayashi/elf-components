@@ -1,5 +1,5 @@
 import { create, props } from "@stylexjs/stylex";
-import { useCallback, useState } from "react";
+import { type ReactNode, useCallback, useState } from "react";
 import {
   colors,
   consts,
@@ -27,6 +27,12 @@ export interface SetupWizardProps {
   readonly appName: string;
   /** Short tagline shown on the feature marketing step. */
   readonly tagline?: string | undefined;
+  /** Custom body for step 1 (features). Defaults to generic local-first description. */
+  readonly featuresDescription?: ReactNode | undefined;
+  /** Custom heading for step 2 (your-data). Defaults to "You control your data". */
+  readonly dataHeading?: string | undefined;
+  /** Custom body for step 2 (your-data). Defaults to generic data-control description. */
+  readonly dataDescription?: ReactNode | undefined;
   /** Validate a mnemonic string for the restore step. Return true if valid. */
   readonly validateMnemonic?: ((value: string) => boolean) | undefined;
   /** Create a new account (init Evolu with sync) and return the mnemonic. */
@@ -38,6 +44,9 @@ export interface SetupWizardProps {
 export function SetupWizard({
   appName,
   tagline,
+  featuresDescription,
+  dataHeading,
+  dataDescription,
   validateMnemonic,
   onCreateAccount,
   onComplete,
@@ -83,11 +92,14 @@ export function SetupWizard({
           <>
             <h2 {...props(styles.heading)}>Welcome to {appName}</h2>
             {tagline && <p {...props(styles.body)}>{tagline}</p>}
-            <p {...props(styles.body)}>
-              {appName} works offline, syncs across your devices with end-to-end
-              encryption, and never locks you into a cloud service. Your data
-              lives on your hardware — fast, private, and always available.
-            </p>
+            {featuresDescription
+              ? <div {...props(styles.body)}>{featuresDescription}</div>
+              : <p {...props(styles.body)}>
+                  {appName} works offline, syncs across your devices with end-to-end
+                  encryption, and never locks you into a cloud service. Your data
+                  lives on your hardware — fast, private, and always available.
+                </p>}
+            <div {...props(styles.separator)} />
             <div {...props(styles.actions)}>
               <button
                 type="button"
@@ -102,16 +114,19 @@ export function SetupWizard({
 
         {step === "your-data" && (
           <>
-            <h2 {...props(styles.heading)}>You control your data</h2>
-            <p {...props(styles.body)}>
-              {appName} is local-first. Everything is stored on your device by
-              default — nothing is sent to a server unless you choose to enable
-              sync.
-            </p>
+            <h2 {...props(styles.heading)}>{dataHeading ?? "You control your data"}</h2>
+            {dataDescription
+              ? <div {...props(styles.body)}>{dataDescription}</div>
+              : <p {...props(styles.body)}>
+                  {appName} is local-first. Everything is stored on your device by
+                  default — nothing is sent to a server unless you choose to enable
+                  sync.
+                </p>}
+            <div {...props(styles.separator)} />
             <div {...props(styles.actions)}>
               <button
                 type="button"
-                {...props(elementStyles.button)}
+                {...props(elementStyles.button, styles.buttonBack)}
                 onClick={() => setStep("features")}
               >
                 Back
@@ -132,17 +147,18 @@ export function SetupWizard({
             <h2 {...props(styles.heading)}>Sync across devices?</h2>
             <p {...props(styles.body)}>
               Sync uses end-to-end encryption to securely replicate your data
-              across devices. No one else can read it — not even the sync
-              server.
+              across devices and browsers. No one else can read it — not even
+              the sync server.
             </p>
             <p {...props(styles.body)}>
-              Your data is tied to an identity phrase — 24 words that uniquely
-              identify you and your data. You can change this later in Settings.
+              If you&apos;re not sure, you can always enable or disable sync
+              later in settings.
             </p>
+            <div {...props(styles.separator)} />
             <div {...props(styles.actions)}>
               <button
                 type="button"
-                {...props(elementStyles.button)}
+                {...props(elementStyles.button, styles.buttonBack)}
                 onClick={() => setStep("your-data")}
               >
                 Back
@@ -172,10 +188,11 @@ export function SetupWizard({
               Your data will stay on this device only. If you change your mind,
               you can enable sync anytime from Settings.
             </p>
+            <div {...props(styles.separator)} />
             <div {...props(styles.actions)}>
               <button
                 type="button"
-                {...props(elementStyles.button)}
+                {...props(elementStyles.button, styles.buttonBack)}
                 onClick={() => setStep("sync-choice")}
               >
                 Back
@@ -193,16 +210,21 @@ export function SetupWizard({
 
         {step === "account-choice" && (
           <>
-            <h2 {...props(styles.heading)}>Do you have an identity phrase?</h2>
+            <h2 {...props(styles.heading)}>Securing your data</h2>
             <p {...props(styles.body)}>
-              If you&apos;ve used {appName} on another device, enter your
-              existing identity phrase to access your data. Otherwise,
-              we&apos;ll create a new one for you.
+              Your synchronized data is protected by a private Identity
+              Phrase — 24 words that uniquely identify you and your data.
             </p>
+            <p {...props(styles.body)}>
+              If you&apos;ve used {appName} on another device or browser,
+              enter your existing Identity Phrase to access your data.
+              Otherwise, create a new one.
+            </p>
+            <div {...props(styles.separator)} />
             <div {...props(styles.actions)}>
               <button
                 type="button"
-                {...props(elementStyles.button)}
+                {...props(elementStyles.button, styles.buttonBack)}
                 onClick={() => setStep("sync-choice")}
               >
                 Back
@@ -227,10 +249,10 @@ export function SetupWizard({
 
         {step === "restore" && (
           <>
-            <h2 {...props(styles.heading)}>Enter your identity phrase</h2>
+            <h2 {...props(styles.heading)}>Enter your Identity Phrase</h2>
             <p {...props(styles.body)}>
-              Enter your 24-word identity phrase to access your data and sync
-              across devices.
+              Enter your 24-word Identity Phrase to access your data and sync
+              across devices and other browsers.
             </p>
             <div {...props(styles.inputGroup)}>
               <input
@@ -254,10 +276,11 @@ export function SetupWizard({
             {restoreError && (
               <p {...props(styles.errorText)}>{restoreError}</p>
             )}
+            <div {...props(styles.separator)} />
             <div {...props(styles.actions)}>
               <button
                 type="button"
-                {...props(elementStyles.button)}
+                {...props(elementStyles.button, styles.buttonBack)}
                 onClick={() => {
                   setRestoreValue("");
                   setRestoreError("");
@@ -279,13 +302,14 @@ export function SetupWizard({
 
         {step === "new-account" && (
           <>
-            <h2 {...props(styles.heading)}>Here&apos;s your identity phrase</h2>
+            <h2 {...props(styles.heading)}>Your Identity</h2>
             <p {...props(styles.body)}>
-              This is the key to your data — treat it like a password. Save it
-              somewhere safe.
-              {mnemonic
-                ? " You'll need it to access your data on other devices."
-                : " You can find your identity phrase in Settings. Save it somewhere safe — you'll need it to access your data on other devices."}
+              Your Identity Phrase below is the key to your data — treat it
+              like a password. You&apos;ll need it to access your data on
+              other devices.
+            </p>
+            <p {...props(styles.body)}>
+              You can always access it in your settings later as well.
             </p>
             {mnemonic && (
               <div {...props(styles.mnemonicBlock)}>
@@ -299,10 +323,11 @@ export function SetupWizard({
                 </button>
               </div>
             )}
+            <div {...props(styles.separator)} />
             <div {...props(styles.actions)}>
               <button
                 type="button"
-                {...props(elementStyles.button)}
+                {...props(elementStyles.button, styles.buttonBack)}
                 onClick={() => setStep("account-choice")}
               >
                 Back
@@ -375,6 +400,15 @@ const styles = create({
     gap: spacing.xs,
     flexWrap: "wrap",
     justifyContent: "flex-end",
+    paddingBlockStart: 0,
+  },
+  separator: {
+    height: 1,
+    backgroundColor: colors.border,
+    margin: 0,
+  },
+  buttonBack: {
+    marginInlineEnd: "auto",
   },
   buttonPrimary: {
     backgroundColor: colors.accent,
