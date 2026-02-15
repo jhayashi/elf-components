@@ -30,6 +30,27 @@
     --success: #388e3c;
     --link-text-hover: #0052a3;
     --search-match-background: #fff9c4;
+    --syntax-keyword: #ad3da4;
+    --syntax-string: #d12f1b;
+    --syntax-comment: #707f8c;
+    --syntax-function: #3e8087;
+    --syntax-type: #4b21b0;
+    --syntax-variable: #1d1d1f;
+    --syntax-number: #272ad8;
+    --syntax-operator: #1d1d1f;
+    --syntax-constant: #3e8087;
+    --syntax-property: #1d1d1f;
+    --syntax-boolean: #ad3da4;
+    --syntax-tag: #ad3da4;
+    --syntax-attribute: #947100;
+    --syntax-constructor: #1d1d1f;
+    --syntax-enum: #4b21b0;
+    --syntax-title: #b23c00;
+    --syntax-punctuation: #1d1d1f;
+    --syntax-comment-doc: #506e79;
+    --syntax-string-escape: #1d1d1f;
+    --syntax-string-regex: #1d1d1f;
+    --syntax-variable-special: #ad3da4;
   }
   /* Cupertino Dark */
   @media (prefers-color-scheme: dark) {
@@ -57,6 +78,27 @@
       --success: #69f0ae;
       --link-text-hover: #7dc4ff;
       --search-match-background: #5a4f1a;
+      --syntax-keyword: #ff7ab2;
+      --syntax-string: #ff8170;
+      --syntax-comment: #7f8c98;
+      --syntax-function: #78c2b3;
+      --syntax-type: #dabaff;
+      --syntax-variable: #dfdfe0;
+      --syntax-number: #d9c97c;
+      --syntax-operator: #dfdfe0;
+      --syntax-constant: #78c2b3;
+      --syntax-property: #dfdfe0;
+      --syntax-boolean: #ff7ab2;
+      --syntax-tag: #ff7ab2;
+      --syntax-attribute: #cc9768;
+      --syntax-constructor: #dfdfe0;
+      --syntax-enum: #dabaff;
+      --syntax-title: #ffcc78;
+      --syntax-punctuation: #dfdfe0;
+      --syntax-comment-doc: #6b8a97;
+      --syntax-string-escape: #dfdfe0;
+      --syntax-string-regex: #dfdfe0;
+      --syntax-variable-special: #ff7ab2;
     }
   }
 
@@ -156,6 +198,9 @@
   .keys-list dt { font-family: ui-monospace, "SF Mono", Monaco, monospace; font-size: 0.72rem; color: var(--text); margin-top: 0.5rem; }
   .keys-list dd { font-size: 0.72rem; color: var(--text-muted); margin-left: 0; margin-bottom: 0.25rem; }
   .key-category { color: var(--text-accent); font-size: 0.83rem; font-weight: 600; margin-top: 1rem; margin-bottom: 0.25rem; }
+
+  /* ---- Syntax Colors ---- */
+  .syntax-sample { font-family: ui-monospace, "SF Mono", Monaco, "Droid Sans Mono", monospace; font-size: 0.9rem; }
 </style>
 </head>
 <body>
@@ -208,6 +253,34 @@
   <div class="swatch"><div class="swatch-box" style="background: var(--success)"></div><div><div class="swatch-label">--success</div><div class="swatch-value">Success</div></div></div>
   <div class="swatch"><div class="swatch-box" style="background: var(--link-text-hover)"></div><div><div class="swatch-label">--link-text-hover</div><div class="swatch-value">Links</div></div></div>
   <div class="swatch"><div class="swatch-box" style="background: var(--search-match-background)"></div><div><div class="swatch-label">--search-match-background</div><div class="swatch-value">Search highlight</div></div></div>
+</div>
+
+<hr>
+
+<!-- Syntax Colors -->
+<h2>Syntax Colors</h2>
+<div class="palette">
+  <div class="swatch"><div class="swatch-box" style="background: var(--syntax-keyword)"></div><div><span class="syntax-sample" style="color: var(--syntax-keyword)">const function return</span><div class="swatch-label">--syntax-keyword</div></div></div>
+  <div class="swatch"><div class="swatch-box" style="background: var(--syntax-string)"></div><div><span class="syntax-sample" style="color: var(--syntax-string)">"hello world"</span><div class="swatch-label">--syntax-string</div></div></div>
+  <div class="swatch"><div class="swatch-box" style="background: var(--syntax-comment)"></div><div><span class="syntax-sample" style="color: var(--syntax-comment)">// a comment</span><div class="swatch-label">--syntax-comment</div></div></div>
+  <div class="swatch"><div class="swatch-box" style="background: var(--syntax-function)"></div><div><span class="syntax-sample" style="color: var(--syntax-function)">fetchData()</span><div class="swatch-label">--syntax-function</div></div></div>
+  <div class="swatch"><div class="swatch-box" style="background: var(--syntax-type)"></div><div><span class="syntax-sample" style="color: var(--syntax-type)">string number boolean</span><div class="swatch-label">--syntax-type</div></div></div>
+  <div class="swatch"><div class="swatch-box" style="background: var(--syntax-variable)"></div><div><span class="syntax-sample" style="color: var(--syntax-variable)">userName count</span><div class="swatch-label">--syntax-variable</div></div></div>
+  <div class="swatch"><div class="swatch-box" style="background: var(--syntax-number)"></div><div><span class="syntax-sample" style="color: var(--syntax-number)">42 3.14 0xff</span><div class="swatch-label">--syntax-number</div></div></div>
+  <div class="swatch"><div class="swatch-box" style="background: var(--syntax-operator)"></div><div><span class="syntax-sample" style="color: var(--syntax-operator)">= + - * / ===</span><div class="swatch-label">--syntax-operator</div></div></div>
+  <div class="swatch"><div class="swatch-box" style="background: var(--syntax-constant)"></div><div><span class="syntax-sample" style="color: var(--syntax-constant)">MAX_SIZE PI</span><div class="swatch-label">--syntax-constant</div></div></div>
+  <div class="swatch"><div class="swatch-box" style="background: var(--syntax-property)"></div><div><span class="syntax-sample" style="color: var(--syntax-property)">.length .name</span><div class="swatch-label">--syntax-property</div></div></div>
+  <div class="swatch"><div class="swatch-box" style="background: var(--syntax-boolean)"></div><div><span class="syntax-sample" style="color: var(--syntax-boolean)">true false</span><div class="swatch-label">--syntax-boolean</div></div></div>
+  <div class="swatch"><div class="swatch-box" style="background: var(--syntax-tag)"></div><div><span class="syntax-sample" style="color: var(--syntax-tag)">&lt;div&gt; &lt;span&gt;</span><div class="swatch-label">--syntax-tag</div></div></div>
+  <div class="swatch"><div class="swatch-box" style="background: var(--syntax-attribute)"></div><div><span class="syntax-sample" style="color: var(--syntax-attribute)">class="..." id="..."</span><div class="swatch-label">--syntax-attribute</div></div></div>
+  <div class="swatch"><div class="swatch-box" style="background: var(--syntax-constructor)"></div><div><span class="syntax-sample" style="color: var(--syntax-constructor)">new Map()</span><div class="swatch-label">--syntax-constructor</div></div></div>
+  <div class="swatch"><div class="swatch-box" style="background: var(--syntax-enum)"></div><div><span class="syntax-sample" style="color: var(--syntax-enum)">Status.Active</span><div class="swatch-label">--syntax-enum</div></div></div>
+  <div class="swatch"><div class="swatch-box" style="background: var(--syntax-title)"></div><div><span class="syntax-sample" style="color: var(--syntax-title)"># Heading</span><div class="swatch-label">--syntax-title</div></div></div>
+  <div class="swatch"><div class="swatch-box" style="background: var(--syntax-punctuation)"></div><div><span class="syntax-sample" style="color: var(--syntax-punctuation)">{ } ( ) [ ] ;</span><div class="swatch-label">--syntax-punctuation</div></div></div>
+  <div class="swatch"><div class="swatch-box" style="background: var(--syntax-comment-doc)"></div><div><span class="syntax-sample" style="color: var(--syntax-comment-doc)">/** @param */</span><div class="swatch-label">--syntax-comment-doc</div></div></div>
+  <div class="swatch"><div class="swatch-box" style="background: var(--syntax-string-escape)"></div><div><span class="syntax-sample" style="color: var(--syntax-string-escape)">\n \t \\</span><div class="swatch-label">--syntax-string-escape</div></div></div>
+  <div class="swatch"><div class="swatch-box" style="background: var(--syntax-string-regex)"></div><div><span class="syntax-sample" style="color: var(--syntax-string-regex)">/^match$/gi</span><div class="swatch-label">--syntax-string-regex</div></div></div>
+  <div class="swatch"><div class="swatch-box" style="background: var(--syntax-variable-special)"></div><div><span class="syntax-sample" style="color: var(--syntax-variable-special)">this self _</span><div class="swatch-label">--syntax-variable-special</div></div></div>
 </div>
 
 <hr>
@@ -411,12 +484,12 @@
 <!-- Available Zed Theme Keys -->
 <h2>Available Zed Theme Keys</h2>
 <p style="color: var(--text-muted); font-size: 0.83rem; margin-bottom: 1rem;">
-  The full Zed theme schema has ~150 style keys. ELF uses 22 of them.
+  The full Zed theme schema has ~150 style keys. ELF uses 43 of them.
 </p>
 
 <div class="keys-grid">
   <div>
-    <div class="key-category">Used by ELF (22)</div>
+    <div class="key-category">Used by ELF (43)</div>
     <dl class="keys-list">
       <dt>background</dt><dd>Page background</dd>
       <dt>surface.background</dt><dd>Panel/surface background</dd>
@@ -441,12 +514,32 @@
       <dt>success</dt><dd>Success states</dd>
       <dt>link_text.hover</dt><dd>Link hover color</dd>
       <dt>search.match_background</dt><dd>Search result highlight</dd>
+      <dt>syntax.keyword</dt><dd>Keywords (const, function, return)</dd>
+      <dt>syntax.string</dt><dd>String literals</dd>
+      <dt>syntax.comment</dt><dd>Comments</dd>
+      <dt>syntax.function</dt><dd>Function names</dd>
+      <dt>syntax.type</dt><dd>Type names</dd>
+      <dt>syntax.variable</dt><dd>Variables</dd>
+      <dt>syntax.number</dt><dd>Numeric literals</dd>
+      <dt>syntax.operator</dt><dd>Operators</dd>
+      <dt>syntax.constant</dt><dd>Constants</dd>
+      <dt>syntax.property</dt><dd>Object properties</dd>
+      <dt>syntax.boolean</dt><dd>Boolean literals</dd>
+      <dt>syntax.tag</dt><dd>HTML/JSX tags</dd>
+      <dt>syntax.attribute</dt><dd>HTML/JSX attributes</dd>
+      <dt>syntax.constructor</dt><dd>Constructors</dd>
+      <dt>syntax.enum</dt><dd>Enum names</dd>
+      <dt>syntax.title</dt><dd>Markdown headings</dd>
+      <dt>syntax.punctuation</dt><dd>Brackets, semicolons</dd>
+      <dt>syntax.comment.doc</dt><dd>Doc comments (JSDoc)</dd>
+      <dt>syntax.string.escape</dt><dd>Escape sequences</dd>
+      <dt>syntax.string.regex</dt><dd>Regular expressions</dd>
+      <dt>syntax.variable.special</dt><dd>Special variables (this, self)</dd>
     </dl>
   </div>
   <div>
     <div class="key-category">Available but Unused</div>
     <dl class="keys-list">
-      <dt>syntax.*</dt><dd>~30 keys for code syntax highlighting (keywords, strings, comments, functions, etc.). Could be useful for code block styling.</dd>
       <dt>terminal.*</dt><dd>~20 keys for terminal colors (ANSI colors, cursor, selection).</dd>
       <dt>editor.*</dt><dd>~15 keys for editor chrome (gutter, line numbers, active line, indent guides, wrap guide).</dd>
       <dt>tab.*</dt><dd>~8 keys for tab bar styling (active, inactive, unfocused).</dd>
@@ -468,28 +561,28 @@
 // Bundled theme style data (only the 22 keys ELF uses)
 const themes = {
   "one": {
-    light: {"background":"#fafafa","surface.background":"#ebebec","elevated_surface.background":"#ebebec","text":"#242529","text.muted":"#58585a","text.placeholder":"#7e8086","text.accent":"#5c78e2","text.disabled":"#7e8086","icon":"#242529","icon.muted":"#58585a","border":"#c9c9ca","border.variant":"#dfdfe0","border.focused":"#7d82e8","element.hover":"#dfdfe0","element.active":"#cacaca","element.selected":"#cacaca","ghost_element.hover":"#dfdfe0","ghost_element.active":"#cacaca","error":"#d36151","warning":"#a48819","success":"#669f59","link_text.hover":"#5c78e2","search.match_background":"#5c79e266"},
-    dark: {"background":"#282c33","surface.background":"#2f343e","elevated_surface.background":"#2f343e","text":"#dce0e5","text.muted":"#a9afbc","text.placeholder":"#878a98","text.accent":"#74ade8","text.disabled":"#878a98","icon":"#dce0e5","icon.muted":"#a9afbc","border":"#464b57","border.variant":"#363c46","border.focused":"#47679e","element.hover":"#363c46","element.active":"#454a56","element.selected":"#454a56","ghost_element.hover":"#363c46","ghost_element.active":"#454a56","error":"#d07277","warning":"#dec184","success":"#a1c181","link_text.hover":"#74ade8","search.match_background":"#74ade866"}
+    light: {"background":"#fafafa","surface.background":"#ebebec","elevated_surface.background":"#ebebec","text":"#242529","text.muted":"#58585a","text.placeholder":"#7e8086","text.accent":"#5c78e2","text.disabled":"#7e8086","icon":"#242529","icon.muted":"#58585a","border":"#c9c9ca","border.variant":"#dfdfe0","border.focused":"#7d82e8","element.hover":"#dfdfe0","element.active":"#cacaca","element.selected":"#cacaca","ghost_element.hover":"#dfdfe0","ghost_element.active":"#cacaca","error":"#d36151","warning":"#a48819","success":"#669f59","link_text.hover":"#5c78e2","search.match_background":"#5c79e266","syntax.keyword":"#a449ab","syntax.string":"#649f57","syntax.comment":"#a2a3a7","syntax.function":"#5b79e3","syntax.type":"#3882b7","syntax.variable":"#242529","syntax.number":"#ad6e25","syntax.operator":"#3882b7","syntax.constant":"#c18401","syntax.property":"#d3604f","syntax.boolean":"#ad6e25","syntax.tag":"#5c78e2","syntax.attribute":"#5c78e2","syntax.constructor":"#5c78e2","syntax.enum":"#3882b7","syntax.title":"#d3604f","syntax.punctuation":"#242529","syntax.comment.doc":"#7c7e86","syntax.string.escape":"#7c7e86","syntax.string.regex":"#ad6e26","syntax.variable.special":"#ad6e25"},
+    dark: {"background":"#282c33","surface.background":"#2f343e","elevated_surface.background":"#2f343e","text":"#dce0e5","text.muted":"#a9afbc","text.placeholder":"#878a98","text.accent":"#74ade8","text.disabled":"#878a98","icon":"#dce0e5","icon.muted":"#a9afbc","border":"#464b57","border.variant":"#363c46","border.focused":"#47679e","element.hover":"#363c46","element.active":"#454a56","element.selected":"#454a56","ghost_element.hover":"#363c46","ghost_element.active":"#454a56","error":"#d07277","warning":"#dec184","success":"#a1c181","link_text.hover":"#74ade8","search.match_background":"#74ade866","syntax.keyword":"#b477cf","syntax.string":"#a1c181","syntax.comment":"#5d636f","syntax.function":"#73ade9","syntax.type":"#6eb4bf","syntax.variable":"#acb2be","syntax.number":"#bf956a","syntax.operator":"#6eb4bf","syntax.constant":"#dfc184","syntax.property":"#d07277","syntax.boolean":"#bf956a","syntax.tag":"#74ade8","syntax.attribute":"#74ade8","syntax.constructor":"#73ade9","syntax.enum":"#6eb4bf","syntax.title":"#d07277","syntax.punctuation":"#acb2be","syntax.comment.doc":"#878e98","syntax.string.escape":"#878e98","syntax.string.regex":"#bf956a","syntax.variable.special":"#bf956a"}
   },
   "catppuccin": {
-    light: {"background":"#eff1f5","surface.background":"#e6e9ef","elevated_surface.background":"#e6e9ef","text":"#4c4f69","text.muted":"#5c5f77","text.placeholder":"#9ca0b0","text.accent":"#8839ef","text.disabled":"#acb0be","icon":"#4c4f69","icon.muted":"#8c8fa1","border":"#ccd0da","border.variant":"#bcc0cc","border.focused":"#7287fd","element.hover":"#ccd0da","element.active":"#bcc0cc","element.selected":"#bcc0cc","ghost_element.hover":"#ccd0da","ghost_element.active":"#bcc0cc","error":"#d20f39","warning":"#df8e1d","success":"#40a02b","link_text.hover":"#1e66f5","search.match_background":"#1e66f566"},
-    dark: {"background":"#24273a","surface.background":"#1e2030","elevated_surface.background":"#1e2030","text":"#cad3f5","text.muted":"#b8c0e0","text.placeholder":"#6e738d","text.accent":"#c6a0f6","text.disabled":"#5b6078","icon":"#cad3f5","icon.muted":"#8087a2","border":"#363a4f","border.variant":"#494d64","border.focused":"#b7bdf8","element.hover":"#363a4f","element.active":"#494d64","element.selected":"#494d64","ghost_element.hover":"#363a4f","ghost_element.active":"#494d64","error":"#ed8796","warning":"#eed49f","success":"#a6da95","link_text.hover":"#8aadf4","search.match_background":"#8aadf466"}
+    light: {"background":"#eff1f5","surface.background":"#e6e9ef","elevated_surface.background":"#e6e9ef","text":"#4c4f69","text.muted":"#5c5f77","text.placeholder":"#9ca0b0","text.accent":"#8839ef","text.disabled":"#acb0be","icon":"#4c4f69","icon.muted":"#8c8fa1","border":"#ccd0da","border.variant":"#bcc0cc","border.focused":"#7287fd","element.hover":"#ccd0da","element.active":"#bcc0cc","element.selected":"#bcc0cc","ghost_element.hover":"#ccd0da","ghost_element.active":"#bcc0cc","error":"#d20f39","warning":"#df8e1d","success":"#40a02b","link_text.hover":"#1e66f5","search.match_background":"#1e66f566","syntax.keyword":"#8839ef","syntax.string":"#40a02b","syntax.comment":"#7c7f93","syntax.function":"#1e66f5","syntax.type":"#df8e1d","syntax.variable":"#4c4f69","syntax.number":"#fe640b","syntax.operator":"#04a5e5","syntax.constant":"#fe640b","syntax.property":"#1e66f5","syntax.boolean":"#fe640b","syntax.tag":"#1e66f5","syntax.attribute":"#fe640b","syntax.constructor":"#dd7878","syntax.enum":"#179299","syntax.title":"#4c4f69","syntax.punctuation":"#7c7f93","syntax.comment.doc":"#7c7f93","syntax.string.escape":"#ea76cb","syntax.string.regex":"#fe640b","syntax.variable.special":"#d20f39"},
+    dark: {"background":"#24273a","surface.background":"#1e2030","elevated_surface.background":"#1e2030","text":"#cad3f5","text.muted":"#b8c0e0","text.placeholder":"#6e738d","text.accent":"#c6a0f6","text.disabled":"#5b6078","icon":"#cad3f5","icon.muted":"#8087a2","border":"#363a4f","border.variant":"#494d64","border.focused":"#b7bdf8","element.hover":"#363a4f","element.active":"#494d64","element.selected":"#494d64","ghost_element.hover":"#363a4f","ghost_element.active":"#494d64","error":"#ed8796","warning":"#eed49f","success":"#a6da95","link_text.hover":"#8aadf4","search.match_background":"#8aadf466","syntax.keyword":"#c6a0f6","syntax.string":"#a6da95","syntax.comment":"#939ab7","syntax.function":"#8aadf4","syntax.type":"#eed49f","syntax.variable":"#cad3f5","syntax.number":"#f5a97f","syntax.operator":"#91d7e3","syntax.constant":"#f5a97f","syntax.property":"#8aadf4","syntax.boolean":"#f5a97f","syntax.tag":"#8aadf4","syntax.attribute":"#f5a97f","syntax.constructor":"#f0c6c6","syntax.enum":"#8bd5ca","syntax.title":"#cad3f5","syntax.punctuation":"#939ab7","syntax.comment.doc":"#939ab7","syntax.string.escape":"#f5bde6","syntax.string.regex":"#f5a97f","syntax.variable.special":"#ed8796"}
   },
   "github": {
-    light: {"background":"#ffffff","surface.background":"#f6f8fa","elevated_surface.background":"#ffffff","text":"#1f2328","text.muted":"#59636e","text.placeholder":"#818b98","text.accent":"#0969da","text.disabled":"#818b98","icon":"#1f2328","icon.muted":"#59636e","border":"#d1d9e0","border.variant":"#e6eaef","border.focused":"#0969da","element.hover":"#f6f8fa","element.active":"#eff2f5","element.selected":"#eff2f5","ghost_element.hover":"#f6f8fa","ghost_element.active":"#eff2f5","error":"#cf222e","warning":"#9a6700","success":"#1a7f37","link_text.hover":"#0550ae","search.match_background":"#fff8c5"},
-    dark: {"background":"#0d1117","surface.background":"#151b23","elevated_surface.background":"#161b22","text":"#f0f6fc","text.muted":"#9198a1","text.placeholder":"#656c76","text.accent":"#58a6ff","text.disabled":"#656c76","icon":"#f0f6fc","icon.muted":"#9198a1","border":"#2f3742","border.variant":"#212830","border.focused":"#58a6ff","element.hover":"#151b23","element.active":"#212830","element.selected":"#212830","ghost_element.hover":"#151b23","ghost_element.active":"#212830","error":"#f85149","warning":"#d29922","success":"#3fb950","link_text.hover":"#79c0ff","search.match_background":"#f8e3a14d"}
+    light: {"background":"#ffffff","surface.background":"#f6f8fa","elevated_surface.background":"#ffffff","text":"#1f2328","text.muted":"#59636e","text.placeholder":"#818b98","text.accent":"#0969da","text.disabled":"#818b98","icon":"#1f2328","icon.muted":"#59636e","border":"#d1d9e0","border.variant":"#e6eaef","border.focused":"#0969da","element.hover":"#f6f8fa","element.active":"#eff2f5","element.selected":"#eff2f5","ghost_element.hover":"#f6f8fa","ghost_element.active":"#eff2f5","error":"#cf222e","warning":"#9a6700","success":"#1a7f37","link_text.hover":"#0550ae","search.match_background":"#fff8c5","syntax.keyword":"#cf222e","syntax.string":"#0a3069","syntax.comment":"#59636e","syntax.function":"#8250df","syntax.type":"#953800","syntax.variable":"#1f2328","syntax.number":"#0550ae","syntax.operator":"#cf222e","syntax.constant":"#0550ae","syntax.property":"#1f2328","syntax.boolean":"#0550ae","syntax.tag":"#116329","syntax.attribute":"#0550ae","syntax.constructor":"#cf222e","syntax.enum":"#953800","syntax.title":"#0550ae","syntax.punctuation":"#cf222e","syntax.comment.doc":"#59636e","syntax.string.escape":"#cf222e","syntax.string.regex":"#0a3069","syntax.variable.special":"#0550ae"},
+    dark: {"background":"#0d1117","surface.background":"#151b23","elevated_surface.background":"#161b22","text":"#f0f6fc","text.muted":"#9198a1","text.placeholder":"#656c76","text.accent":"#58a6ff","text.disabled":"#656c76","icon":"#f0f6fc","icon.muted":"#9198a1","border":"#2f3742","border.variant":"#212830","border.focused":"#58a6ff","element.hover":"#151b23","element.active":"#212830","element.selected":"#212830","ghost_element.hover":"#151b23","ghost_element.active":"#212830","error":"#f85149","warning":"#d29922","success":"#3fb950","link_text.hover":"#79c0ff","search.match_background":"#f8e3a14d","syntax.keyword":"#f47067","syntax.string":"#96d0ff","syntax.comment":"#9198a1","syntax.function":"#dcbdfb","syntax.type":"#f69d50","syntax.variable":"#d1d7e0","syntax.number":"#6cb6ff","syntax.operator":"#f47067","syntax.constant":"#6cb6ff","syntax.property":"#d1d7e0","syntax.boolean":"#6cb6ff","syntax.tag":"#8ddb8c","syntax.attribute":"#6cb6ff","syntax.constructor":"#f47067","syntax.enum":"#f69d50","syntax.title":"#6cb6ff","syntax.punctuation":"#f47067","syntax.comment.doc":"#9198a1","syntax.string.escape":"#f47067","syntax.string.regex":"#96d0ff","syntax.variable.special":"#6cb6ff"}
   },
   "smooth": {
-    light: {"background":"#faf8f5","surface.background":"#edeae5","elevated_surface.background":"#e5e2dd","text":"#2c2825","text.muted":"#6b6360","text.placeholder":"#9a9390","text.accent":"#4a8b9e","text.disabled":"#b8b3ae","icon":"#2c2825","icon.muted":"#6b6360","border":"#d4d0ca","border.variant":"#c5c0ba","border.focused":"#4a8b9e","element.hover":"#e5e2dd","element.active":"#d4d0ca","element.selected":"#d8ebe8","ghost_element.hover":"#e5e2dd50","ghost_element.active":"#d4d0ca80","error":"#c94747","warning":"#d4863e","success":"#5d9464","link_text.hover":"#3a6d7c","search.match_background":"#f5e6a8"},
-    dark: {"background":"#1e1c1a","surface.background":"#2a2826","elevated_surface.background":"#353330","text":"#d4d0cc","text.muted":"#8f8a85","text.placeholder":"#6b6660","text.accent":"#6eb4c7","text.disabled":"#4d4a47","icon":"#d4d0cc","icon.muted":"#8f8a85","border":"#3d3a37","border.variant":"#4d4a47","border.focused":"#6eb4c7","element.hover":"#353330","element.active":"#3d3a37","element.selected":"#2d4a47","ghost_element.hover":"#35333050","ghost_element.active":"#3d3a3780","error":"#e87070","warning":"#e8a760","success":"#7cb083","link_text.hover":"#8ec5d6","search.match_background":"#5a4d20"}
+    light: {"background":"#faf8f5","surface.background":"#edeae5","elevated_surface.background":"#e5e2dd","text":"#2c2825","text.muted":"#6b6360","text.placeholder":"#9a9390","text.accent":"#4a8b9e","text.disabled":"#b8b3ae","icon":"#2c2825","icon.muted":"#6b6360","border":"#d4d0ca","border.variant":"#c5c0ba","border.focused":"#4a8b9e","element.hover":"#e5e2dd","element.active":"#d4d0ca","element.selected":"#d8ebe8","ghost_element.hover":"#e5e2dd50","ghost_element.active":"#d4d0ca80","error":"#c94747","warning":"#d4863e","success":"#5d9464","link_text.hover":"#3a6d7c","search.match_background":"#f5e6a8","syntax.keyword":"#9b5a8c","syntax.string":"#6a8f55","syntax.comment":"#9a9390","syntax.function":"#4a8b9e","syntax.type":"#b07d3a","syntax.variable":"#2c2825","syntax.number":"#c07040","syntax.operator":"#6b6360","syntax.constant":"#b07d3a","syntax.property":"#c4705a","syntax.boolean":"#c07040","syntax.tag":"#4a8b9e","syntax.attribute":"#b07d3a","syntax.constructor":"#4a8b9e","syntax.enum":"#7a6fa0","syntax.title":"#c4705a","syntax.punctuation":"#6b6360","syntax.comment.doc":"#7a7570","syntax.string.escape":"#7a7570","syntax.string.regex":"#c07040","syntax.variable.special":"#9b5a8c"},
+    dark: {"background":"#1e1c1a","surface.background":"#2a2826","elevated_surface.background":"#353330","text":"#d4d0cc","text.muted":"#8f8a85","text.placeholder":"#6b6660","text.accent":"#6eb4c7","text.disabled":"#4d4a47","icon":"#d4d0cc","icon.muted":"#8f8a85","border":"#3d3a37","border.variant":"#4d4a47","border.focused":"#6eb4c7","element.hover":"#353330","element.active":"#3d3a37","element.selected":"#2d4a47","ghost_element.hover":"#35333050","ghost_element.active":"#3d3a3780","error":"#e87070","warning":"#e8a760","success":"#7cb083","link_text.hover":"#8ec5d6","search.match_background":"#5a4d20","syntax.keyword":"#c9a0c0","syntax.string":"#a0c49a","syntax.comment":"#6b6660","syntax.function":"#6eb4c7","syntax.type":"#d4a860","syntax.variable":"#d4d0cc","syntax.number":"#e8a760","syntax.operator":"#8f8a85","syntax.constant":"#d4a860","syntax.property":"#e08878","syntax.boolean":"#e8a760","syntax.tag":"#6eb4c7","syntax.attribute":"#d4a860","syntax.constructor":"#6eb4c7","syntax.enum":"#a89ec8","syntax.title":"#e08878","syntax.punctuation":"#8f8a85","syntax.comment.doc":"#857f7a","syntax.string.escape":"#857f7a","syntax.string.regex":"#e8a760","syntax.variable.special":"#c9a0c0"}
   },
   "bandley": {
-    light: {"background":"#ffffff","surface.background":"#f5f5f7","elevated_surface.background":"#ebebed","text":"#1d1d1f","text.muted":"#6e6e73","text.placeholder":"#a1a1a6","text.accent":"#0066cc","text.disabled":"#c7c7cc","icon":"#1d1d1f","icon.muted":"#6e6e73","border":"#d1d1d6","border.variant":"#c7c7cc","border.focused":"#0066cc","element.hover":"#f5f5f7","element.active":"#ebebed","element.selected":"#e3f2fd","ghost_element.hover":"#f5f5f750","ghost_element.active":"#ebebed80","error":"#d32f2f","warning":"#f57c00","success":"#388e3c","link_text.hover":"#0052a3","search.match_background":"#fff9c4"},
-    dark: {"background":"#292a30","surface.background":"#323238","elevated_surface.background":"#3d3d43","text":"#dfdfe0","text.muted":"#92929d","text.placeholder":"#6c6c70","text.accent":"#4eb0ff","text.disabled":"#48484d","icon":"#dfdfe0","icon.muted":"#92929d","border":"#48484d","border.variant":"#3d3d43","border.focused":"#4eb0ff","element.hover":"#3d3d43","element.active":"#48484d","element.selected":"#1e3a4f","ghost_element.hover":"#3d3d4350","ghost_element.active":"#48484d80","error":"#ff5252","warning":"#ffab40","success":"#69f0ae","link_text.hover":"#7dc4ff","search.match_background":"#5a4f1a"}
+    light: {"background":"#ffffff","surface.background":"#f5f5f7","elevated_surface.background":"#ebebed","text":"#1d1d1f","text.muted":"#6e6e73","text.placeholder":"#a1a1a6","text.accent":"#0066cc","text.disabled":"#c7c7cc","icon":"#1d1d1f","icon.muted":"#6e6e73","border":"#d1d1d6","border.variant":"#c7c7cc","border.focused":"#0066cc","element.hover":"#f5f5f7","element.active":"#ebebed","element.selected":"#e3f2fd","ghost_element.hover":"#f5f5f750","ghost_element.active":"#ebebed80","error":"#d32f2f","warning":"#f57c00","success":"#388e3c","link_text.hover":"#0052a3","search.match_background":"#fff9c4","syntax.keyword":"#ad3da4","syntax.string":"#d12f1b","syntax.comment":"#707f8c","syntax.function":"#3e8087","syntax.type":"#4b21b0","syntax.variable":"#1d1d1f","syntax.number":"#272ad8","syntax.operator":"#1d1d1f","syntax.constant":"#3e8087","syntax.property":"#1d1d1f","syntax.boolean":"#ad3da4","syntax.tag":"#ad3da4","syntax.attribute":"#947100","syntax.constructor":"#1d1d1f","syntax.enum":"#4b21b0","syntax.title":"#b23c00","syntax.punctuation":"#1d1d1f","syntax.comment.doc":"#506e79","syntax.string.escape":"#1d1d1f","syntax.string.regex":"#1d1d1f","syntax.variable.special":"#ad3da4"},
+    dark: {"background":"#292a30","surface.background":"#323238","elevated_surface.background":"#3d3d43","text":"#dfdfe0","text.muted":"#92929d","text.placeholder":"#6c6c70","text.accent":"#4eb0ff","text.disabled":"#48484d","icon":"#dfdfe0","icon.muted":"#92929d","border":"#48484d","border.variant":"#3d3d43","border.focused":"#4eb0ff","element.hover":"#3d3d43","element.active":"#48484d","element.selected":"#1e3a4f","ghost_element.hover":"#3d3d4350","ghost_element.active":"#48484d80","error":"#ff5252","warning":"#ffab40","success":"#69f0ae","link_text.hover":"#7dc4ff","search.match_background":"#5a4f1a","syntax.keyword":"#ff7ab2","syntax.string":"#ff8170","syntax.comment":"#7f8c98","syntax.function":"#78c2b3","syntax.type":"#dabaff","syntax.variable":"#dfdfe0","syntax.number":"#d9c97c","syntax.operator":"#dfdfe0","syntax.constant":"#78c2b3","syntax.property":"#dfdfe0","syntax.boolean":"#ff7ab2","syntax.tag":"#ff7ab2","syntax.attribute":"#cc9768","syntax.constructor":"#dfdfe0","syntax.enum":"#dabaff","syntax.title":"#ffcc78","syntax.punctuation":"#dfdfe0","syntax.comment.doc":"#6b8a97","syntax.string.escape":"#dfdfe0","syntax.string.regex":"#dfdfe0","syntax.variable.special":"#ff7ab2"}
   },
   "flexoki": {
-    light: {"background":"#fffcf0","surface.background":"#f2f0e5","elevated_surface.background":"#e6e4d9","text":"#100f0f","text.muted":"#6f6e69","text.placeholder":"#878580","text.accent":"#205ea6","text.disabled":"#b7b5ac","icon":"#100f0f","icon.muted":"#6f6e69","border":"#e6e4d9","border.variant":"#cecdc3","border.focused":"#205ea6","element.hover":"#e6e4d9","element.active":"#cecdc3","element.selected":"#cecdc3","ghost_element.hover":"#e6e4d9","ghost_element.active":"#cecdc3","error":"#af3029","warning":"#ad8301","success":"#66800b","link_text.hover":"#4385be","search.match_background":"#d0a21544"},
-    dark: {"background":"#100f0f","surface.background":"#1c1b1a","elevated_surface.background":"#282726","text":"#cecdc3","text.muted":"#878580","text.placeholder":"#575653","text.accent":"#4385be","text.disabled":"#403e3c","icon":"#cecdc3","icon.muted":"#878580","border":"#282726","border.variant":"#343331","border.focused":"#4385be","element.hover":"#282726","element.active":"#343331","element.selected":"#343331","ghost_element.hover":"#282726","ghost_element.active":"#343331","error":"#d14d41","warning":"#d0a215","success":"#879a39","link_text.hover":"#4385be","search.match_background":"#d0a21544"}
+    light: {"background":"#fffcf0","surface.background":"#f2f0e5","elevated_surface.background":"#e6e4d9","text":"#100f0f","text.muted":"#6f6e69","text.placeholder":"#878580","text.accent":"#205ea6","text.disabled":"#b7b5ac","icon":"#100f0f","icon.muted":"#6f6e69","border":"#e6e4d9","border.variant":"#cecdc3","border.focused":"#205ea6","element.hover":"#e6e4d9","element.active":"#cecdc3","element.selected":"#cecdc3","ghost_element.hover":"#e6e4d9","ghost_element.active":"#cecdc3","error":"#af3029","warning":"#ad8301","success":"#66800b","link_text.hover":"#4385be","search.match_background":"#d0a21544","syntax.keyword":"#66800B","syntax.string":"#24837B","syntax.comment":"#B7B5AC","syntax.function":"#BC5215","syntax.type":"#AD8301","syntax.variable":"#205EA6","syntax.number":"#5E409D","syntax.operator":"#6F6E69","syntax.constant":"#BC5215","syntax.property":"#BC5215","syntax.boolean":"#AD8301","syntax.tag":"#205EA6","syntax.attribute":"#205EA6","syntax.constructor":"#205EA6","syntax.enum":"#AD8301","syntax.title":"#AD8301","syntax.punctuation":"#6F6E69","syntax.comment.doc":"#B7B5AC","syntax.string.escape":"#24837B","syntax.string.regex":"#24837B","syntax.variable.special":"#205EA6"},
+    dark: {"background":"#100f0f","surface.background":"#1c1b1a","elevated_surface.background":"#282726","text":"#cecdc3","text.muted":"#878580","text.placeholder":"#575653","text.accent":"#4385be","text.disabled":"#403e3c","icon":"#cecdc3","icon.muted":"#878580","border":"#282726","border.variant":"#343331","border.focused":"#4385be","element.hover":"#282726","element.active":"#343331","element.selected":"#343331","ghost_element.hover":"#282726","ghost_element.active":"#343331","error":"#d14d41","warning":"#d0a215","success":"#879a39","link_text.hover":"#4385be","search.match_background":"#d0a21544","syntax.keyword":"#879A39","syntax.string":"#3AA99F","syntax.comment":"#575653","syntax.function":"#DA702C","syntax.type":"#D0A215","syntax.variable":"#4385BE","syntax.number":"#8B7EC8","syntax.operator":"#878580","syntax.constant":"#DA702C","syntax.property":"#DA702C","syntax.boolean":"#D0A215","syntax.tag":"#4385BE","syntax.attribute":"#4385BE","syntax.constructor":"#4385BE","syntax.enum":"#D0A215","syntax.title":"#D0A215","syntax.punctuation":"#878580","syntax.comment.doc":"#575653","syntax.string.escape":"#3AA99F","syntax.string.regex":"#3AA99F","syntax.variable.special":"#4385BE"}
   }
 };
 

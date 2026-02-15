@@ -33,6 +33,29 @@ export default function Home() {
       </section>
 
       <section {...props(pageStyles.section)}>
+        <h2 {...props(pageStyles.sectionTitle)}>Syntax Colors</h2>
+        <div {...props(styles.palette)}>
+          {syntaxTokens.map(({ label, cssVar, sample }) => (
+            <div key={label} {...props(styles.swatch)}>
+              <div
+                {...props(styles.swatchBox)}
+                style={{ backgroundColor: `var(--${cssVar})` }}
+              />
+              <div>
+                <span
+                  {...props(styles.syntaxSample)}
+                  style={{ color: `var(--${cssVar})` }}
+                >
+                  {sample}
+                </span>
+                <div {...props(styles.swatchLabel)}>--{cssVar}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section {...props(pageStyles.section)}>
         <h2 {...props(pageStyles.sectionTitle)}>Typography</h2>
         <p {...props(styles.typeStep5)}>Step 5 — Display</p>
         <p {...props(styles.typeStep4)}>Step 4 — Large heading</p>
@@ -115,6 +138,30 @@ const paletteItems = [
   { label: "Search highlight", cssVar: "search-match-background" },
 ];
 
+const syntaxTokens = [
+  { label: "keyword", cssVar: "syntax-keyword", sample: "const function return" },
+  { label: "string", cssVar: "syntax-string", sample: '"hello world"' },
+  { label: "comment", cssVar: "syntax-comment", sample: "// a comment" },
+  { label: "function", cssVar: "syntax-function", sample: "fetchData()" },
+  { label: "type", cssVar: "syntax-type", sample: "string number boolean" },
+  { label: "variable", cssVar: "syntax-variable", sample: "userName count" },
+  { label: "number", cssVar: "syntax-number", sample: "42 3.14 0xff" },
+  { label: "operator", cssVar: "syntax-operator", sample: "= + - * / ===" },
+  { label: "constant", cssVar: "syntax-constant", sample: "MAX_SIZE PI" },
+  { label: "property", cssVar: "syntax-property", sample: ".length .name" },
+  { label: "boolean", cssVar: "syntax-boolean", sample: "true false" },
+  { label: "tag", cssVar: "syntax-tag", sample: "<div> <span>" },
+  { label: "attribute", cssVar: "syntax-attribute", sample: 'class="..." id="..."' },
+  { label: "constructor", cssVar: "syntax-constructor", sample: "new Map()" },
+  { label: "enum", cssVar: "syntax-enum", sample: "Status.Active" },
+  { label: "title", cssVar: "syntax-title", sample: "# Heading" },
+  { label: "punctuation", cssVar: "syntax-punctuation", sample: "{ } ( ) [ ] ;" },
+  { label: "comment.doc", cssVar: "syntax-comment-doc", sample: "/** @param */" },
+  { label: "string.escape", cssVar: "syntax-string-escape", sample: "\\n \\t \\\\" },
+  { label: "string.regex", cssVar: "syntax-string-regex", sample: "/^match$/gi" },
+  { label: "variable.special", cssVar: "syntax-variable-special", sample: "this self _" },
+];
+
 const styles = create({
   palette: {
     display: "grid",
@@ -147,6 +194,10 @@ const styles = create({
     fontSize: fontSizes.step_2,
     fontFamily: fonts.sans,
     color: colors.disabled,
+  },
+  syntaxSample: {
+    fontSize: fontSizes.step_1,
+    fontFamily: fonts.mono,
   },
   typeStep5: { fontSize: fontSizes.step5, fontFamily: fonts.sans, color: colors.primary },
   typeStep4: { fontSize: fontSizes.step4, fontFamily: fonts.sans, color: colors.primary },
