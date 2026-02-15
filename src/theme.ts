@@ -19,9 +19,12 @@ export interface ThemeEntry {
   file: ZedThemeFile;
 }
 
+export type Appearance = "light" | "dark" | "system";
+
 interface SavedTheme {
   themeId: string;
   custom?: ZedThemeFile;
+  appearance?: Appearance | undefined;
 }
 
 export interface ThemeManager {
@@ -35,6 +38,10 @@ export interface ThemeManager {
   getCustomFile(): ZedThemeFile | undefined;
   /** Save theme selection to localStorage. */
   setSelected(id: string, customFile?: ZedThemeFile): void;
+  /** Read the saved appearance mode from localStorage (defaults to "system"). */
+  getAppearance(): Appearance;
+  /** Save appearance mode to localStorage. */
+  setAppearance(appearance: Appearance): void;
 }
 
 /**
@@ -44,7 +51,7 @@ export interface ThemeManager {
 export function applyThemeStyle(style: Record<string, string>): void {
   const root = document.documentElement;
   for (const [key, value] of Object.entries(style)) {
-    root.style.setProperty("--" + key.replaceAll(".", "-"), value);
+    root.style.setProperty("--" + key.replaceAll(".", "-").replaceAll("_", "-"), value);
   }
 }
 
@@ -53,12 +60,14 @@ export function applyThemeStyle(style: Record<string, string>): void {
  * Returns a cleanup function that removes the inline styles.
  */
 export function applyZedTheme(themeFile: ZedThemeFile): () => void {
+  const root = document.documentElement;
   const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
   const appearance = isDark ? "dark" : "light";
   const theme = themeFile.themes.find((t) => t.appearance === appearance);
   if (theme) {
     applyThemeStyle(theme.style);
   }
+  root.style.setProperty("color-scheme", "light dark");
 
   // Listen for changes
   const mql = window.matchMedia("(prefers-color-scheme: dark)");
@@ -74,11 +83,41 @@ export function applyZedTheme(themeFile: ZedThemeFile): () => void {
 
   return () => {
     mql.removeEventListener("change", handler);
-    // Remove inline overrides so CSS :root rules take effect again
-    const root = document.documentElement;
+    root.style.removeProperty("color-scheme");
     if (theme) {
       for (const key of Object.keys(theme.style)) {
-        root.style.removeProperty("--" + key.replaceAll(".", "-"));
+        root.style.removeProperty("--" + key.replaceAll(".", "-").replaceAll("_", "-"));
+      }
+    }
+  };
+}
+
+/**
+ * Apply a Zed theme with an explicit appearance mode.
+ * - `"light"` or `"dark"`: force that variant, no media query listener.
+ * - `"system"`: follow OS preference (same as `applyZedTheme()`).
+ * Returns a cleanup function.
+ */
+export function applyZedThemeWithAppearance(
+  themeFile: ZedThemeFile,
+  appearance: Appearance,
+): () => void {
+  if (appearance === "system") {
+    return applyZedTheme(themeFile);
+  }
+
+  const root = document.documentElement;
+  const theme = themeFile.themes.find((t) => t.appearance === appearance);
+  if (theme) {
+    applyThemeStyle(theme.style);
+  }
+  root.style.setProperty("color-scheme", appearance);
+
+  return () => {
+    root.style.removeProperty("color-scheme");
+    if (theme) {
+      for (const key of Object.keys(theme.style)) {
+        root.style.removeProperty("--" + key.replaceAll(".", "-").replaceAll("_", "-"));
       }
     }
   };
@@ -114,7 +153,8 @@ export function createThemeManager(config: {
       const saved = getSavedTheme();
       const themeFile = resolveThemeFile(saved);
       if (themeFile) {
-        return applyZedTheme(themeFile);
+        const appearance = saved.appearance ?? "system";
+        return applyZedThemeWithAppearance(themeFile, appearance);
       }
       return () => {};
     },
@@ -155,11 +195,22 @@ export function createThemeManager(config: {
     },
 
     setSelected(id: string, customFile?: ZedThemeFile): void {
+      const existing = getSavedTheme();
       const saved: SavedTheme =
         id === "custom" && customFile
-          ? { themeId: "custom", custom: customFile }
-          : { themeId: id };
+          ? { themeId: "custom", custom: customFile, appearance: existing.appearance }
+          : { themeId: id, appearance: existing.appearance };
       localStorage.setItem(config.storageKey, JSON.stringify(saved));
+    },
+
+    getAppearance(): Appearance {
+      return getSavedTheme().appearance ?? "system";
+    },
+
+    setAppearance(appearance: Appearance): void {
+      const existing = getSavedTheme();
+      existing.appearance = appearance;
+      localStorage.setItem(config.storageKey, JSON.stringify(existing));
     },
   };
 }

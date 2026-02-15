@@ -1,5 +1,5 @@
 import { create, props } from "@stylexjs/stylex";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { Fragment, useEffect, useRef, useState, type ReactNode } from "react";
 import { colors, consts, fonts, fontSizes, spacing } from "./Tokens.stylex";
 
 export interface MenuItem {
@@ -11,8 +11,8 @@ interface LinkRenderProps {
   href: string;
   children: ReactNode;
   onClick: () => void;
-  className?: string;
-  style?: Record<string, string>;
+  className?: string | undefined;
+  style?: Readonly<Record<string, string | number>> | undefined;
 }
 
 export interface MenuProps {
@@ -82,13 +82,13 @@ export function Menu({
               );
             }
             const linkProps = props(styles.dropdownItem);
-            return renderLink({
-              key: item.href,
+            const element = renderLink({
               href: item.href,
               onClick: () => setOpen(false),
               children: item.label,
               ...linkProps,
-            } as LinkRenderProps & { key: string });
+            });
+            return <Fragment key={item.href}>{element}</Fragment>;
           })}
         </div>
       )}

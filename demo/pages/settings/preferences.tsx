@@ -2,8 +2,10 @@ import { props } from "@stylexjs/stylex";
 import { useCallback, useEffect, useState } from "react";
 import { pageStyles } from "../../../src/PageStyles.stylex";
 import { bundledThemes } from "../../../src/themes";
-import { applyZedTheme } from "../../../src/theme";
+import type { Appearance } from "../../../src/theme";
+import { applyZedThemeWithAppearance } from "../../../src/theme";
 import { ThemePicker } from "../../../src/settings/ThemePicker";
+import { AppearancePicker } from "../../../src/settings/AppearancePicker";
 import { AccountSection } from "../../../src/settings/AccountSection";
 import { SyncSection } from "../../../src/settings/SyncSection";
 import { Toast, toast } from "../../../src/Toast";
@@ -12,10 +14,12 @@ import { themeManager } from "../_app";
 
 export default function Preferences() {
   const [activeThemeId, setActiveThemeId] = useState("");
+  const [appearance, setAppearance] = useState<Appearance>("system");
   const [syncEnabled, setSyncEnabled] = useState(true);
 
   useEffect(() => {
     setActiveThemeId(themeManager.getSelectedId());
+    setAppearance(themeManager.getAppearance());
   }, []);
 
   const handleThemeSelect = useCallback((id: string) => {
@@ -23,7 +27,14 @@ export default function Preferences() {
     if (!entry) return;
     themeManager.setSelected(id);
     setActiveThemeId(id);
-    applyZedTheme(entry.file);
+    applyZedThemeWithAppearance(entry.file, themeManager.getAppearance());
+  }, []);
+
+  const handleAppearanceChange = useCallback((a: Appearance) => {
+    themeManager.setAppearance(a);
+    setAppearance(a);
+    // Re-apply current theme with new appearance
+    themeManager.applySelected();
   }, []);
 
   const handleRestore = useCallback(() => {
@@ -62,6 +73,14 @@ export default function Preferences() {
           themes={bundledThemes}
           activeThemeId={activeThemeId}
           onSelect={handleThemeSelect}
+        />
+      </section>
+
+      <section {...props(pageStyles.section)}>
+        <h2 {...props(pageStyles.sectionTitle)}>Appearance</h2>
+        <AppearancePicker
+          appearance={appearance}
+          onChange={handleAppearanceChange}
         />
       </section>
 

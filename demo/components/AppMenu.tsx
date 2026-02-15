@@ -12,12 +12,12 @@ function renderLink(props: {
   href: string;
   children: ReactNode;
   onClick: () => void;
-  className?: string;
-  style?: Record<string, string>;
+  className?: string | undefined;
+  style?: Readonly<Record<string, string | number>> | undefined;
 }) {
   const { href, children, onClick, ...rest } = props;
   return (
-    <Link key={href} href={href} onClick={onClick} {...rest}>
+    <Link href={href} onClick={onClick} {...rest}>
       {children}
     </Link>
   );
