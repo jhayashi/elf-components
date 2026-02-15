@@ -3,8 +3,8 @@ import { Fragment, useEffect, useRef, useState, type ReactNode } from "react";
 import { colors, consts, fonts, fontSizes, spacing } from "./Tokens.stylex";
 
 export interface MenuItem {
-  label: string;
-  href: string;
+  readonly label: string;
+  readonly href: string;
 }
 
 interface LinkRenderProps {
@@ -16,12 +16,12 @@ interface LinkRenderProps {
 }
 
 export interface MenuProps {
-  currentPath: string;
-  items: MenuItem[];
+  readonly currentPath: string;
+  readonly items: readonly MenuItem[];
   /** Custom link renderer for SPA navigation. Defaults to plain <a>. */
-  renderLink?: (props: LinkRenderProps) => ReactNode;
+  readonly renderLink?: (props: LinkRenderProps) => ReactNode;
   /** Accessible label for the menu button. */
-  ariaLabel?: string;
+  readonly ariaLabel?: string;
 }
 
 function DefaultLink({ href, children, onClick, ...rest }: LinkRenderProps) {
@@ -101,8 +101,9 @@ const styles = create({
     position: "relative",
   },
   hamburgerButton: {
-    backgroundColor: "transparent",
+    backgroundColor: colors.surfaceBackground,
     borderWidth: 0,
+    borderRadius: 6,
     outline: "none",
     appearance: "none",
     cursor: "pointer",
@@ -129,7 +130,7 @@ const styles = create({
     marginTop: 4,
     display: "flex",
     flexDirection: "column",
-    backgroundColor: colors.hoverAndFocusBackground,
+    backgroundColor: colors.elevatedSurfaceBackground,
     borderWidth: 1,
     borderStyle: "solid",
     borderColor: colors.border,

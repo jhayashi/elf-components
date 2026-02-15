@@ -2,13 +2,13 @@ import { create, props } from "@stylexjs/stylex";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { colors, fonts, fontSizes } from "./Tokens.stylex";
 
-interface EditableTitleProps {
+export interface EditableTitleProps {
   /** The current persisted title (from Evolu or other store). */
-  currentTitle?: string | null | undefined;
+  readonly currentTitle?: string | null | undefined;
   /** Fallback shown when currentTitle is empty. */
-  defaultTitle: string;
+  readonly defaultTitle: string;
   /** Called with the new title when the user saves. */
-  onSave: (title: string) => void;
+  readonly onSave: (title: string) => void;
 }
 
 export function EditableTitle({

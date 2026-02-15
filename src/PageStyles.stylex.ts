@@ -1,5 +1,5 @@
 import { create } from "@stylexjs/stylex";
-import { colors, consts, fonts, fontSizes, spacing } from "./Tokens.stylex";
+import { colors, consts, fonts, fontSizes, spacing, transitions } from "./Tokens.stylex";
 
 const MOBILE = "@media (max-width: 480px)";
 
@@ -57,9 +57,14 @@ export const elementStyles = create({
     borderRadius: 6,
     cursor: "pointer",
     minHeight: consts.minimalHit,
+    transition: transitions.color,
     ":hover": {
       borderColor: colors.accent,
     },
+  },
+  buttonActive: {
+    borderColor: colors.accent,
+    color: colors.accent,
   },
   buttonDanger: {
     alignSelf: "flex-start",

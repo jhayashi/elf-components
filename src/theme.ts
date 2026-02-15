@@ -1,22 +1,22 @@
 /** Zed editor theme format types and configurable theme manager. */
 
 export interface ZedThemeFile {
-  $schema?: string;
-  name: string;
-  author?: string;
-  themes: ZedTheme[];
+  readonly $schema?: string;
+  readonly name: string;
+  readonly author?: string;
+  readonly themes: readonly ZedTheme[];
 }
 
 export interface ZedTheme {
-  name: string;
-  appearance: "light" | "dark";
-  style: Record<string, string>;
+  readonly name: string;
+  readonly appearance: "light" | "dark";
+  readonly style: Readonly<Record<string, string>>;
 }
 
 export interface ThemeEntry {
-  id: string;
-  name: string;
-  file: ZedThemeFile;
+  readonly id: string;
+  readonly name: string;
+  readonly file: ZedThemeFile;
 }
 
 export type Appearance = "light" | "dark" | "system";
@@ -29,19 +29,19 @@ interface SavedTheme {
 
 export interface ThemeManager {
   /** Read the saved theme from localStorage and apply it. Returns a cleanup function. */
-  applySelected(): () => void;
+  readonly applySelected: () => () => void;
   /** Apply the light variant of the saved theme, ignoring prefers-color-scheme. */
-  applyLight(): () => void;
+  readonly applyLight: () => () => void;
   /** Read the saved theme ID from localStorage. */
-  getSelectedId(): string;
+  readonly getSelectedId: () => string;
   /** Read the saved custom theme file from localStorage, if any. */
-  getCustomFile(): ZedThemeFile | undefined;
+  readonly getCustomFile: () => ZedThemeFile | undefined;
   /** Save theme selection to localStorage. */
-  setSelected(id: string, customFile?: ZedThemeFile): void;
+  readonly setSelected: (id: string, customFile?: ZedThemeFile) => void;
   /** Read the saved appearance mode from localStorage (defaults to "system"). */
-  getAppearance(): Appearance;
+  readonly getAppearance: () => Appearance;
   /** Save appearance mode to localStorage. */
-  setAppearance(appearance: Appearance): void;
+  readonly setAppearance: (appearance: Appearance) => void;
 }
 
 /**

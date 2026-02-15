@@ -7,8 +7,8 @@ const MOBILE = "@media (max-width: 480px)";
 type ToastVariant = "success" | "error";
 
 interface ToastMessage {
-  text: string;
-  variant: ToastVariant;
+  readonly text: string;
+  readonly variant: ToastVariant;
 }
 
 let showToastGlobal: ((msg: ToastMessage) => void) | null = null;

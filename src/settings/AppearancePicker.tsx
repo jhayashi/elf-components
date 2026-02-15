@@ -1,21 +1,31 @@
 import { create, props } from "@stylexjs/stylex";
 import type { Appearance } from "../theme";
-import { colors, consts, fonts, fontSizes, spacing } from "../Tokens.stylex";
+import { colors, spacing } from "../Tokens.stylex";
+import { elementStyles } from "../PageStyles.stylex";
 
 const MOBILE = "@media (max-width: 480px)";
 
-const options: { value: Appearance; label: string }[] = [
-  { value: "light", label: "Light" },
-  { value: "dark", label: "Dark" },
-  { value: "system", label: "System" },
-];
-
 export interface AppearancePickerProps {
-  appearance: Appearance;
-  onChange: (appearance: Appearance) => void;
+  readonly appearance: Appearance;
+  readonly onChange: (appearance: Appearance) => void;
+  readonly lightLabel?: string;
+  readonly darkLabel?: string;
+  readonly systemLabel?: string;
 }
 
-export function AppearancePicker({ appearance, onChange }: AppearancePickerProps) {
+export function AppearancePicker({
+  appearance,
+  onChange,
+  lightLabel = "Light",
+  darkLabel = "Dark",
+  systemLabel = "System",
+}: AppearancePickerProps) {
+  const options: { value: Appearance; label: string }[] = [
+    { value: "light", label: lightLabel },
+    { value: "dark", label: darkLabel },
+    { value: "system", label: systemLabel },
+  ];
+
   return (
     <div {...props(styles.row)}>
       {options.map((opt) => (
@@ -24,7 +34,7 @@ export function AppearancePicker({ appearance, onChange }: AppearancePickerProps
           type="button"
           onClick={() => onChange(opt.value)}
           {...props(
-            styles.button,
+            elementStyles.button,
             appearance === opt.value && styles.buttonActive,
           )}
         >
@@ -43,23 +53,6 @@ const styles = create({
     flexDirection: {
       default: "row",
       [MOBILE]: "column",
-    },
-  },
-  button: {
-    paddingBlock: spacing.xs,
-    paddingInline: spacing.s,
-    fontSize: fontSizes.step_1,
-    fontFamily: fonts.sans,
-    color: colors.primary,
-    backgroundColor: colors.hoverAndFocusBackground,
-    borderWidth: 1,
-    borderStyle: "solid",
-    borderColor: colors.border,
-    borderRadius: 6,
-    cursor: "pointer",
-    minHeight: consts.minimalHit,
-    ":hover": {
-      borderColor: colors.accent,
     },
   },
   buttonActive: {

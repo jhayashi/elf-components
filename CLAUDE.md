@@ -113,6 +113,26 @@ public/           # Static assets, PWA manifest
 - **Next.js**: `next.config.js` with react-native-web webpack alias, transpilePackages
 - **TypeScript**: `tsconfig.json` with strict mode, jsx: preserve, noEmit
 
+### Adopting elf-components in a Next.js project
+
+When using `"elf-components": "file:../elf-components"` (symlink), the consuming project's `next.config.js` must:
+
+1. Add `"elf-components"` to `transpilePackages`
+2. Add `node_modules/elf-components/src/**/*.{ts,tsx}` to the PostCSS StyleX `include` list
+3. **Force a single copy of React** via webpack aliases to prevent the "Invalid hook call" error caused by the symlinked package resolving its own `node_modules/react`:
+
+```js
+const path = require("path");
+
+// Inside next.config.js webpack callback:
+config.resolve.alias = {
+  ...(config.resolve.alias || {}),
+  "react-native$": "react-native-web",
+  react: path.resolve(__dirname, "node_modules/react"),
+  "react-dom": path.resolve(__dirname, "node_modules/react-dom"),
+};
+```
+
 ## Development
 
 ```bash

@@ -6,14 +6,14 @@ import { pageStyles } from "./PageStyles.stylex";
 const MOBILE = "@media (max-width: 480px)";
 
 export interface AboutProps {
-  iconSrc: string;
-  appName: string;
-  version: string;
-  description: string;
+  readonly iconSrc: string;
+  readonly appName: string;
+  readonly version: string;
+  readonly description: string;
   /** Menu component to render in the header. */
-  menu?: ReactNode;
+  readonly menu?: ReactNode;
   /** Page title. Defaults to "About". */
-  title?: string;
+  readonly title?: string;
 }
 
 export function About({

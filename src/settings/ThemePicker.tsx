@@ -1,13 +1,14 @@
 import { create, props } from "@stylexjs/stylex";
 import type { ThemeEntry } from "../theme";
-import { colors, consts, fonts, fontSizes, spacing } from "../Tokens.stylex";
+import { colors, spacing } from "../Tokens.stylex";
+import { elementStyles } from "../PageStyles.stylex";
 
 const MOBILE = "@media (max-width: 480px)";
 
 export interface ThemePickerProps {
-  themes: ThemeEntry[];
-  activeThemeId: string;
-  onSelect: (id: string) => void;
+  readonly themes: readonly ThemeEntry[];
+  readonly activeThemeId: string;
+  readonly onSelect: (id: string) => void;
 }
 
 export function ThemePicker({ themes, activeThemeId, onSelect }: ThemePickerProps) {
@@ -19,7 +20,7 @@ export function ThemePicker({ themes, activeThemeId, onSelect }: ThemePickerProp
           type="button"
           onClick={() => onSelect(theme.id)}
           {...props(
-            styles.themeButton,
+            elementStyles.button,
             activeThemeId === theme.id && styles.themeButtonActive,
           )}
         >
@@ -38,23 +39,6 @@ const styles = create({
     flexDirection: {
       default: "row",
       [MOBILE]: "column",
-    },
-  },
-  themeButton: {
-    paddingBlock: spacing.xs,
-    paddingInline: spacing.s,
-    fontSize: fontSizes.step_1,
-    fontFamily: fonts.sans,
-    color: colors.primary,
-    backgroundColor: colors.hoverAndFocusBackground,
-    borderWidth: 1,
-    borderStyle: "solid",
-    borderColor: colors.border,
-    borderRadius: 6,
-    cursor: "pointer",
-    minHeight: consts.minimalHit,
-    ":hover": {
-      borderColor: colors.accent,
     },
   },
   themeButtonActive: {

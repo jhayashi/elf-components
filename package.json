@@ -14,7 +14,10 @@
     "./about": "./src/About.tsx",
     "./settings/theme-picker": "./src/settings/ThemePicker.tsx",
     "./settings/account": "./src/settings/AccountSection.tsx",
-    "./settings/sync": "./src/settings/SyncSection.tsx"
+    "./settings/sync": "./src/settings/SyncSection.tsx",
+    "./settings/appearance-picker": "./src/settings/AppearancePicker.tsx",
+    "./editable-title": "./src/EditableTitle.tsx",
+    "./setup-wizard": "./src/SetupWizard.tsx"
   },
   "peerDependencies": {
     "@stylexjs/stylex": "^0.17.5",

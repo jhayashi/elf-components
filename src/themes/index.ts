@@ -3,8 +3,11 @@ import catppuccin from "./catppuccin.json";
 import elementsDefault from "./elements-default.json";
 import flexoki from "./flexoki.json";
 import github from "./github.json";
+import melange from "./melange.json";
+import nord from "./nord.json";
 import smooth from "./smooth.json";
 import xcode from "./xcode.json";
+import zedwaita from "./zedwaita.json";
 
 export type { ThemeEntry };
 
@@ -13,6 +16,9 @@ export const bundledThemes: ThemeEntry[] = [
   { id: "catppuccin", name: "Catppuccin", file: catppuccin as ThemeEntry["file"] },
   { id: "flexoki", name: "Flexoki", file: flexoki as ThemeEntry["file"] },
   { id: "github", name: "GitHub", file: github as ThemeEntry["file"] },
+  { id: "melange", name: "Melange", file: melange as ThemeEntry["file"] },
+  { id: "nord", name: "Nord", file: nord as ThemeEntry["file"] },
   { id: "one", name: "One L/D", file: elementsDefault as ThemeEntry["file"] },
   { id: "smooth", name: "Smooth", file: smooth as ThemeEntry["file"] },
+  { id: "zedwaita", name: "Zedwaita", file: zedwaita as ThemeEntry["file"] },
 ];

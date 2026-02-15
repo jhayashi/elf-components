@@ -66,6 +66,8 @@ export const colors = defineVars({
   success: "var(--success)",
   linkHover: "var(--link-text-hover)",
   ghostElementHover: "var(--ghost-element-hover)",
+  surfaceBackground: "var(--surface-background)",
+  elevatedSurfaceBackground: "var(--elevated-surface-background)",
   searchMatchBackground: "var(--search-match-background)",
 });
 
