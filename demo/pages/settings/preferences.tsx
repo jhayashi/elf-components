@@ -1,3 +1,4 @@
+import { type AppOwner, Mnemonic } from "@evolu/common";
 import { props } from "@stylexjs/stylex";
 import { useCallback, useEffect, useState } from "react";
 import { pageStyles } from "../../../src/PageStyles.stylex";
@@ -8,18 +9,22 @@ import { ThemePicker } from "../../../src/settings/ThemePicker";
 import { AppearancePicker } from "../../../src/settings/AppearancePicker";
 import { AccountSection } from "../../../src/settings/AccountSection";
 import { SyncSection } from "../../../src/settings/SyncSection";
-import { Toast, toast } from "../../../src/Toast";
+import { Toast } from "../../../src/Toast";
 import { AppMenu } from "../../components/AppMenu";
+import { getEvolu, getSyncMode, setSyncMode } from "../../lib/Db";
 import { themeManager } from "../_app";
 
 export default function Preferences() {
   const [activeThemeId, setActiveThemeId] = useState("");
   const [appearance, setAppearance] = useState<Appearance>("system");
   const [syncEnabled, setSyncEnabled] = useState(true);
+  const [owner, setOwner] = useState<AppOwner | null>(null);
 
   useEffect(() => {
     setActiveThemeId(themeManager.getSelectedId());
     setAppearance(themeManager.getAppearance());
+    setSyncEnabled(getSyncMode() === "enabled");
+    void getEvolu().appOwner.then(setOwner);
   }, []);
 
   const handleThemeSelect = useCallback((id: string) => {
@@ -38,25 +43,31 @@ export default function Preferences() {
   }, []);
 
   const handleRestore = useCallback(() => {
-    const mnemonic = window.prompt("Enter your recovery mnemonic:");
-    if (mnemonic) {
-      toast("Owner restored (demo)");
+    const input = window.prompt("Enter your recovery mnemonic:");
+    if (!input) return;
+    const result = Mnemonic.from(input);
+    if (!result.ok) {
+      alert("Invalid mnemonic. Please check and try again.");
+      return;
     }
+    void getEvolu().restoreAppOwner(result.value);
   }, []);
 
   const handleReset = useCallback(() => {
     if (confirm("Are you sure you want to reset? This cannot be undone.")) {
-      toast("Owner reset (demo)");
+      void getEvolu().resetAppOwner();
     }
   }, []);
 
   const handleSyncToggle = useCallback(() => {
-    const msg = syncEnabled
-      ? "Disable sync? Data will stay local only."
-      : "Enable sync across devices?";
+    const newMode = syncEnabled ? "local-only" : "enabled";
+    const msg =
+      newMode === "local-only"
+        ? "Disable sync? Data will stay local only."
+        : "Enable sync across devices?";
     if (confirm(msg)) {
-      setSyncEnabled(!syncEnabled);
-      toast(syncEnabled ? "Sync disabled" : "Sync enabled");
+      setSyncMode(newMode);
+      window.location.reload();
     }
   }, [syncEnabled]);
 
@@ -85,7 +96,7 @@ export default function Preferences() {
       </section>
 
       <AccountSection
-        owner={{ mnemonic: "abandon ability able about above absent absorb abstract" }}
+        owner={owner ? { mnemonic: owner.mnemonic as string } : null}
         onRestore={handleRestore}
         onReset={handleReset}
       />

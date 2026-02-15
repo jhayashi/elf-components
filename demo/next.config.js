@@ -3,7 +3,13 @@ const path = require("path");
 /** @type {import("next").NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  transpilePackages: ["elf-components"],
+  transpilePackages: [
+    "elf-components",
+    "@evolu/common",
+    "@evolu/react",
+    "@evolu/react-web",
+    "@evolu/web",
+  ],
   outputFileTracingRoot: __dirname,
   webpack: (config) => {
     // Force a single copy of React — the library source (../../src) would

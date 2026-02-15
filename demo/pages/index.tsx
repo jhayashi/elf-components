@@ -1,18 +1,102 @@
+import { useQuery } from "@evolu/react";
 import { create, props } from "@stylexjs/stylex";
+import { useCallback } from "react";
+import { EditableTitle } from "../../src/EditableTitle";
 import { colors, fonts, fontSizes, spacing } from "../../src/Tokens.stylex";
 import { pageStyles, elementStyles } from "../../src/PageStyles.stylex";
 import { Toast, toast } from "../../src/Toast";
 import { AppMenu } from "../components/AppMenu";
+import {
+  getSettingsQuery,
+  updatePageTitle,
+  createSettings,
+} from "../lib/Db";
 
 const MOBILE = "@media (max-width: 480px)";
 
 export default function Home() {
+  const settings = useQuery(getSettingsQuery());
+  const settingsRow = settings.length > 0 ? settings[0] : undefined;
+
+  const handleTitleSave = useCallback(
+    (title: string) => {
+      if (settingsRow) {
+        updatePageTitle(settingsRow.id, title);
+      } else {
+        createSettings({ pageTitle: title });
+      }
+    },
+    [settingsRow],
+  );
+
   return (
     <div {...props(pageStyles.page)}>
       <div {...props(pageStyles.header)}>
-        <h1 {...props(pageStyles.title)}>ELF Demo</h1>
+        <EditableTitle
+          currentTitle={settingsRow?.pageTitle ?? null}
+          defaultTitle="ELF Demo"
+          onSave={handleTitleSave}
+        />
         <AppMenu currentPath="/" />
       </div>
+
+      <section {...props(pageStyles.section)}>
+        <h2 {...props(pageStyles.sectionTitle)}>Interactive Elements</h2>
+        <div {...props(styles.buttonRow)}>
+          <button
+            type="button"
+            onClick={() => toast("Action completed")}
+            {...props(elementStyles.button)}
+          >
+            Show Toast
+          </button>
+          <button
+            type="button"
+            onClick={() => toast("Something went wrong", "error")}
+            {...props(elementStyles.buttonDanger)}
+          >
+            Error Toast
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              localStorage.removeItem("elf-demo-setup");
+              location.reload();
+            }}
+            {...props(elementStyles.button)}
+          >
+            Reset Setup Wizard
+          </button>
+        </div>
+        <div {...props(styles.inputRow)}>
+          <input
+            type="text"
+            placeholder="Text input..."
+            {...props(styles.input)}
+          />
+          <select {...props(elementStyles.select)}>
+            <option>Option A</option>
+            <option>Option B</option>
+            <option>Option C</option>
+          </select>
+        </div>
+        <label {...props(elementStyles.toggleRow)}>
+          <input type="checkbox" defaultChecked />
+          <span {...props(elementStyles.toggleLabel)}>Checkbox example</span>
+        </label>
+      </section>
+
+      <section {...props(pageStyles.section)}>
+        <h2 {...props(pageStyles.sectionTitle)}>Surfaces</h2>
+        <div {...props(styles.surfaceDemo)}>
+          <div {...props(styles.surface)}>
+            <p {...props(styles.surfaceLabel)}>Surface background</p>
+          </div>
+          <div {...props(styles.elevated)}>
+            <p {...props(styles.surfaceLabel)}>Elevated surface</p>
+          </div>
+        </div>
+      </section>
 
       <section {...props(pageStyles.section)}>
         <h2 {...props(pageStyles.sectionTitle)}>Color Palette</h2>
@@ -65,54 +149,6 @@ export default function Home() {
         <p {...props(styles.typeStep0)}>Step 0 — Body (base)</p>
         <p {...props(styles.typeStep_1)}>Step -1 — Small</p>
         <p {...props(styles.typeStep_2)}>Step -2 — Caption</p>
-      </section>
-
-      <section {...props(pageStyles.section)}>
-        <h2 {...props(pageStyles.sectionTitle)}>Interactive Elements</h2>
-        <div {...props(styles.buttonRow)}>
-          <button
-            type="button"
-            onClick={() => toast("Action completed")}
-            {...props(elementStyles.button)}
-          >
-            Show Toast
-          </button>
-          <button
-            type="button"
-            onClick={() => toast("Something went wrong", "error")}
-            {...props(elementStyles.buttonDanger)}
-          >
-            Error Toast
-          </button>
-        </div>
-        <div {...props(styles.inputRow)}>
-          <input
-            type="text"
-            placeholder="Text input..."
-            {...props(styles.input)}
-          />
-          <select {...props(elementStyles.select)}>
-            <option>Option A</option>
-            <option>Option B</option>
-            <option>Option C</option>
-          </select>
-        </div>
-        <label {...props(elementStyles.toggleRow)}>
-          <input type="checkbox" defaultChecked />
-          <span {...props(elementStyles.toggleLabel)}>Checkbox example</span>
-        </label>
-      </section>
-
-      <section {...props(pageStyles.section)}>
-        <h2 {...props(pageStyles.sectionTitle)}>Surfaces</h2>
-        <div {...props(styles.surfaceDemo)}>
-          <div {...props(styles.surface)}>
-            <p {...props(styles.surfaceLabel)}>Surface background</p>
-          </div>
-          <div {...props(styles.elevated)}>
-            <p {...props(styles.surfaceLabel)}>Elevated surface</p>
-          </div>
-        </div>
       </section>
 
       <Toast />
