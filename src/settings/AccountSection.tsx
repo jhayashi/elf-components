@@ -3,17 +3,17 @@ import { useState } from "react";
 import { elementStyles, pageStyles } from "../PageStyles.stylex";
 
 export interface AccountSectionProps {
-  owner: { mnemonic: string } | null;
-  onRestore: () => void;
-  onReset: () => void;
+  readonly owner: { readonly mnemonic: string } | null;
+  readonly onRestore: () => void;
+  readonly onReset: () => void;
   /** Section heading. Defaults to "Account". */
-  title?: string;
+  readonly title?: string;
   /** Button labels. */
-  labels?: {
-    showMnemonic?: string;
-    hideMnemonic?: string;
-    restore?: string;
-    reset?: string;
+  readonly labels?: {
+    readonly showIdentityPhrase?: string;
+    readonly hideIdentityPhrase?: string;
+    readonly restore?: string;
+    readonly reset?: string;
   };
 }
 
@@ -27,10 +27,10 @@ export function AccountSection({
   const [showMnemonic, setShowMnemonic] = useState(false);
 
   const {
-    showMnemonic: showLabel = "Show Mnemonic",
-    hideMnemonic: hideLabel = "Hide Mnemonic",
-    restore: restoreLabel = "Restore Owner",
-    reset: resetLabel = "Reset Owner",
+    showIdentityPhrase: showLabel = "Show Identity Phrase",
+    hideIdentityPhrase: hideLabel = "Hide Identity Phrase",
+    restore: restoreLabel = "Restore Identity",
+    reset: resetLabel = "Reset All Data",
   } = labels;
 
   return (

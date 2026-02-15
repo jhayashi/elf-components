@@ -7,8 +7,8 @@ import {
   fontSizes,
   shadows,
   spacing,
-  transitions,
 } from "./Tokens.stylex";
+import { elementStyles } from "./PageStyles.stylex";
 
 const MOBILE = "@media (max-width: 480px)";
 
@@ -23,16 +23,16 @@ type WizardStep =
 
 type SetupResult = { sync: false } | { sync: true; restoredMnemonic?: string };
 
-interface SetupWizardProps {
-  appName: string;
+export interface SetupWizardProps {
+  readonly appName: string;
   /** Short tagline shown on the feature marketing step. */
-  tagline?: string | undefined;
+  readonly tagline?: string | undefined;
   /** Validate a mnemonic string for the restore step. Return true if valid. */
-  validateMnemonic?: ((value: string) => boolean) | undefined;
+  readonly validateMnemonic?: ((value: string) => boolean) | undefined;
   /** Create a new account (init Evolu with sync) and return the mnemonic. */
-  onCreateAccount?: (() => Promise<string>) | undefined;
+  readonly onCreateAccount?: (() => Promise<string>) | undefined;
   /** Called when the wizard completes. App handles Evolu config + reload. */
-  onComplete: (result: SetupResult) => void;
+  readonly onComplete: (result: SetupResult) => void;
 }
 
 export function SetupWizard({
@@ -52,11 +52,11 @@ export function SetupWizard({
   const handleRestore = useCallback(() => {
     const trimmed = restoreValue.trim();
     if (!trimmed) {
-      setRestoreError("Please enter your mnemonic phrase.");
+      setRestoreError("Please enter your identity phrase.");
       return;
     }
     if (validateMnemonic && !validateMnemonic(trimmed)) {
-      setRestoreError("Invalid mnemonic. Please check and try again.");
+      setRestoreError("Invalid identity phrase. Please check and try again.");
       return;
     }
     onComplete({ sync: true, restoredMnemonic: trimmed });
@@ -91,7 +91,7 @@ export function SetupWizard({
             <div {...props(styles.actions)}>
               <button
                 type="button"
-                {...props(styles.button, styles.buttonPrimary)}
+                {...props(elementStyles.button, styles.buttonPrimary)}
                 onClick={() => setStep("your-data")}
               >
                 Next
@@ -111,14 +111,14 @@ export function SetupWizard({
             <div {...props(styles.actions)}>
               <button
                 type="button"
-                {...props(styles.button)}
+                {...props(elementStyles.button)}
                 onClick={() => setStep("features")}
               >
                 Back
               </button>
               <button
                 type="button"
-                {...props(styles.button, styles.buttonPrimary)}
+                {...props(elementStyles.button, styles.buttonPrimary)}
                 onClick={() => setStep("sync-choice")}
               >
                 Next
@@ -133,26 +133,30 @@ export function SetupWizard({
             <p {...props(styles.body)}>
               Sync uses end-to-end encryption to securely replicate your data
               across devices. No one else can read it — not even the sync
-              server. You can change this later in Settings.
+              server.
+            </p>
+            <p {...props(styles.body)}>
+              Your data is tied to an identity phrase — 24 words that uniquely
+              identify you and your data. You can change this later in Settings.
             </p>
             <div {...props(styles.actions)}>
               <button
                 type="button"
-                {...props(styles.button)}
+                {...props(elementStyles.button)}
                 onClick={() => setStep("your-data")}
               >
                 Back
               </button>
               <button
                 type="button"
-                {...props(styles.button)}
+                {...props(elementStyles.button)}
                 onClick={() => setStep("no-sync-done")}
               >
                 Don&apos;t Sync
               </button>
               <button
                 type="button"
-                {...props(styles.button, styles.buttonPrimary)}
+                {...props(elementStyles.button, styles.buttonPrimary)}
                 onClick={() => setStep("account-choice")}
               >
                 Sync
@@ -171,14 +175,14 @@ export function SetupWizard({
             <div {...props(styles.actions)}>
               <button
                 type="button"
-                {...props(styles.button)}
+                {...props(elementStyles.button)}
                 onClick={() => setStep("sync-choice")}
               >
                 Back
               </button>
               <button
                 type="button"
-                {...props(styles.button, styles.buttonPrimary)}
+                {...props(elementStyles.button, styles.buttonPrimary)}
                 onClick={() => onComplete({ sync: false })}
               >
                 Done
@@ -189,33 +193,33 @@ export function SetupWizard({
 
         {step === "account-choice" && (
           <>
-            <h2 {...props(styles.heading)}>New or existing account?</h2>
+            <h2 {...props(styles.heading)}>Do you have an identity phrase?</h2>
             <p {...props(styles.body)}>
-              If you&apos;ve used {appName} on another device, you can restore
-              your account with your mnemonic phrase. Otherwise, a new account
-              will be created for you.
+              If you&apos;ve used {appName} on another device, enter your
+              existing identity phrase to access your data. Otherwise,
+              we&apos;ll create a new one for you.
             </p>
             <div {...props(styles.actions)}>
               <button
                 type="button"
-                {...props(styles.button)}
+                {...props(elementStyles.button)}
                 onClick={() => setStep("sync-choice")}
               >
                 Back
               </button>
               <button
                 type="button"
-                {...props(styles.button)}
+                {...props(elementStyles.button)}
                 onClick={() => setStep("restore")}
               >
-                Existing
+                I have one
               </button>
               <button
                 type="button"
-                {...props(styles.button, styles.buttonPrimary)}
+                {...props(elementStyles.button, styles.buttonPrimary)}
                 onClick={handleNewAccount}
               >
-                New
+                Create new
               </button>
             </div>
           </>
@@ -223,10 +227,10 @@ export function SetupWizard({
 
         {step === "restore" && (
           <>
-            <h2 {...props(styles.heading)}>Restore account</h2>
+            <h2 {...props(styles.heading)}>Enter your identity phrase</h2>
             <p {...props(styles.body)}>
-              Enter your 24-word mnemonic phrase to restore your account and
-              sync data from your other devices.
+              Enter your 24-word identity phrase to access your data and sync
+              across devices.
             </p>
             <div {...props(styles.inputGroup)}>
               <input
@@ -236,7 +240,7 @@ export function SetupWizard({
                   setRestoreValue(e.target.value);
                   setRestoreError("");
                 }}
-                placeholder="Enter mnemonic phrase..."
+                placeholder="Enter your 24-word identity phrase..."
                 {...props(styles.input)}
               />
               <button
@@ -253,7 +257,7 @@ export function SetupWizard({
             <div {...props(styles.actions)}>
               <button
                 type="button"
-                {...props(styles.button)}
+                {...props(elementStyles.button)}
                 onClick={() => {
                   setRestoreValue("");
                   setRestoreError("");
@@ -264,7 +268,7 @@ export function SetupWizard({
               </button>
               <button
                 type="button"
-                {...props(styles.button, styles.buttonPrimary)}
+                {...props(elementStyles.button, styles.buttonPrimary)}
                 onClick={handleRestore}
               >
                 Done
@@ -275,19 +279,20 @@ export function SetupWizard({
 
         {step === "new-account" && (
           <>
-            <h2 {...props(styles.heading)}>Account created!</h2>
+            <h2 {...props(styles.heading)}>Here&apos;s your identity phrase</h2>
             <p {...props(styles.body)}>
-              Your account has been created with encrypted sync enabled.
+              This is the key to your data — treat it like a password. Save it
+              somewhere safe.
               {mnemonic
-                ? " Save this mnemonic phrase somewhere safe — you'll need it to restore your data on other devices."
-                : " You can find your mnemonic phrase in Settings > Account — save it somewhere safe to restore your data on other devices."}
+                ? " You'll need it to access your data on other devices."
+                : " You can find your identity phrase in Settings. Save it somewhere safe — you'll need it to access your data on other devices."}
             </p>
             {mnemonic && (
               <div {...props(styles.mnemonicBlock)}>
                 <code {...props(styles.mnemonicText)}>{mnemonic}</code>
                 <button
                   type="button"
-                  {...props(styles.button)}
+                  {...props(elementStyles.button)}
                   onClick={handleCopy}
                 >
                   {copied ? "Copied!" : "Copy"}
@@ -297,14 +302,14 @@ export function SetupWizard({
             <div {...props(styles.actions)}>
               <button
                 type="button"
-                {...props(styles.button)}
+                {...props(elementStyles.button)}
                 onClick={() => setStep("account-choice")}
               >
                 Back
               </button>
               <button
                 type="button"
-                {...props(styles.button, styles.buttonPrimary)}
+                {...props(elementStyles.button, styles.buttonPrimary)}
                 onClick={() => onComplete({ sync: true })}
               >
                 Done!
@@ -370,24 +375,6 @@ const styles = create({
     gap: spacing.xs,
     flexWrap: "wrap",
     justifyContent: "flex-end",
-  },
-  button: {
-    paddingBlock: spacing.xs,
-    paddingInline: spacing.s,
-    fontSize: fontSizes.step_1,
-    fontFamily: fonts.sans,
-    color: colors.primary,
-    backgroundColor: colors.hoverAndFocusBackground,
-    borderWidth: 1,
-    borderStyle: "solid",
-    borderColor: colors.border,
-    borderRadius: 6,
-    cursor: "pointer",
-    minHeight: consts.minimalHit,
-    transition: transitions.color,
-    ":hover": {
-      borderColor: colors.accent,
-    },
   },
   buttonPrimary: {
     backgroundColor: colors.accent,

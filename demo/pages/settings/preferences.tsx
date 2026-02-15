@@ -43,11 +43,11 @@ export default function Preferences() {
   }, []);
 
   const handleRestore = useCallback(() => {
-    const input = window.prompt("Enter your recovery mnemonic:");
+    const input = window.prompt("Enter your 24-word identity phrase:");
     if (!input) return;
     const result = Mnemonic.from(input);
     if (!result.ok) {
-      alert("Invalid mnemonic. Please check and try again.");
+      alert("Invalid identity phrase. Please check and try again.");
       return;
     }
     void getEvolu().restoreAppOwner(result.value);
