@@ -17,6 +17,9 @@ export const pageStyles = create({
       [MOBILE]: spacing.s,
     },
     gap: spacing.l,
+    minHeight: 0,
+    overflowY: "auto",
+    scrollbarWidth: "none",
   },
   header: {
     display: "flex",
