@@ -57,6 +57,8 @@ export function SetupWizard({
   const [restoreError, setRestoreError] = useState("");
   const [mnemonic, setMnemonic] = useState("");
   const [copied, setCopied] = useState(false);
+  const [isCreating, setIsCreating] = useState(false);
+  const [createError, setCreateError] = useState("");
 
   const handleRestore = useCallback(() => {
     const trimmed = restoreValue.trim();
@@ -72,11 +74,23 @@ export function SetupWizard({
   }, [restoreValue, validateMnemonic, onComplete]);
 
   const handleNewAccount = useCallback(async () => {
-    if (onCreateAccount) {
-      const m = await onCreateAccount();
-      setMnemonic(m);
+    setIsCreating(true);
+    setCreateError("");
+    try {
+      if (onCreateAccount) {
+        const m = await onCreateAccount();
+        setMnemonic(m);
+      }
+      setStep("new-account");
+    } catch (err) {
+      setCreateError(
+        err instanceof Error
+          ? err.message
+          : "Failed to create account. Please try again.",
+      );
+    } finally {
+      setIsCreating(false);
     }
-    setStep("new-account");
   }, [onCreateAccount]);
 
   const handleCopy = useCallback(async () => {
@@ -240,10 +254,14 @@ export function SetupWizard({
                 type="button"
                 {...props(elementStyles.button, styles.buttonPrimary)}
                 onClick={handleNewAccount}
+                disabled={isCreating}
               >
-                Create new
+                {isCreating ? "Creating..." : "Create new"}
               </button>
             </div>
+            {createError && (
+              <p {...props(styles.errorText)}>{createError}</p>
+            )}
           </>
         )}
 
