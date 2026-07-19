@@ -1,5 +1,5 @@
 import { create, props } from "@stylexjs/stylex";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { elementStyles, pageStyles } from "../PageStyles.stylex";
 import { colors, fonts, fontSizes, spacing } from "../Tokens.stylex";
 
@@ -44,6 +44,10 @@ export function SyncSection({
 }: SyncSectionProps) {
   const [value, setValue] = useState(serverUrl ?? "");
   const [error, setError] = useState(false);
+
+  useEffect(() => {
+    setValue(serverUrl ?? "");
+  }, [serverUrl]);
 
   const handleSave = () => {
     const trimmed = value.trim();
